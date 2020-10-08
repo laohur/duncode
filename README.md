@@ -1,10 +1,7 @@
 # duncode    
-universe string encoder    
-* efficient: idea space cost
-* safe: isolate charactors and  instructions, no transference
-    * ASCII: Select * from table1 where name=[ ”tom” or 1 ‘]
-    * Duncode: SQL[Select * from table1 where name=] String[ ”tom” or 1 ‘]
-* new: support rewrite other features, store both of string and bytes
+efficient universe string encoder    
+* efficient
+* rewrite custom symbols or binary data
 
 > /out includes .exe .out .h .so    
 
