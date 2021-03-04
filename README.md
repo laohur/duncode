@@ -1,7 +1,5 @@
 # duncode    
-efficient universe string encoder    
-* efficient
-* rewrite custom symbols or binary data
+an efficient universal character encoder, implement of paper "Duncode Charasters Shorter".   
 
 > /out includes .exe .out .h .so    
 
@@ -24,7 +22,6 @@ efficient universe string encoder
 | arwikisource    | ISO 8859-6      | 496        | 886        | 738          | 1.79         | 1.49           |
 | ruwiki          | ISO 8859-5      | 3,156      | 5,566      | 4,546        | 1.76         | 1.44           |
 | ruwikisource    | ISO 8859-5      | 624        | 1,075      | 890          | 1.72         | 1.43           |
-| total           |                 | 11,744     | 17,809     | 14,122       | 1.52         | 1.20           |
 
 ## License
 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)
