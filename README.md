@@ -1,14 +1,17 @@
 # duncode    
 an efficient universal character encoder, implement of paper "Duncode Charasters Shorter".   
 
-> /out includes .exe .out .h .so    
+## v0
+cpp
 
-## usage :    
->    1[u/d]:source file type: [utf8, duncode]     
->    2[inpath]      
->    3[outpath]    
+## v1
+java
 
-## performance of encoders   
+## v2
+python
+
+
+## performance of encoders (v1)
 | corpus          | local encoder   | local (MB) | UTF-8 (MB) | Duncode (MB) | UTF-8/ local | Duncode/ local |
 | --------------- | --------------- | ---------- | ---------- | ------------ | ------------ | -------------- |
 | enwikisource    | ISO 8859-1      | 1,558      | 1,564      | 1,562        | 1.00         | 1.00           |
