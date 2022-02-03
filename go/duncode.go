@@ -36,9 +36,9 @@ func rune2Duncode(char rune) (d *Duncode) {
 			if block.Began <= point && point <= block.End {
 				duncode.BlockId = i
 				duncode.ZoneId = block.ZoneId
-				if duncode.ZoneId==4{
+				if duncode.ZoneId == 4 {
 					duncode.Index = point
-				}else{
+				} else {
 					duncode.Index = point - block.Began
 				}
 				return duncode
@@ -48,20 +48,16 @@ func rune2Duncode(char rune) (d *Duncode) {
 	return duncode
 }
 func (a *Duncode) compress(b *Duncode) (r bool) {
-	if a.BlockId != b.BlockId {
-		return false
-	} else if a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) <= 1 && a.Index != 0 {
+	if a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) <= 1 && a.Index != 0 {
 		if len(a.Symbols) == 0 {
 			a.Symbols = []int{a.Index, b.Index}
+			return true
 		}
-		a.Symbols = append(a.Symbols, b.Index)
-		return true
 	} else if a.ZoneId == 3 && b.ZoneId == 3 && len(a.Symbols) <= 1 && a.Index != 0 {
 		if len(a.Symbols) == 0 {
 			a.Symbols = []int{a.Index, b.Index}
+			return true
 		}
-		a.Symbols = append(a.Symbols, b.Index)
-		return true
 	}
 	return false
 }
@@ -84,14 +80,14 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		}
 		var x = byte(d.Symbols[0])
 		var y = byte(d.Symbols[1])
-		var a byte = byte(0xf0) + (byte(blocks[d.Index].Zone2Id)&byte(0x3))<<2 + x>>6
-		var b byte = byte(0x80) + x<<2 + y>>7
+		var a byte = byte(0xf0) + (byte(blocks[d.BlockId].Zone2Id)&byte(0x3))<<2 + x>>6
+		var b byte = byte(0x80)| x<<1 + y>>7
 		var c byte = byte(0x7f) & y
 		return []byte{a, b, c}
 	case 3: //7位字
 		if len(d.Symbols) < 2 {
 			var a = byte(0x80) + byte(blocks[d.BlockId].Zone3Id)
-			var b = byte(0x80) 
+			var b = byte(0x80)
 			var c = byte(d.Index)
 			return []byte{a, b, c}
 		}
@@ -140,7 +136,7 @@ func (d *Duncode) readBytes(bytes []byte) {
 			}
 			var b = (byte(0x7f) & bytes[1]) >> 1
 			var x = int(a<<6 + b)
-			var y = int(0b1&bytes[1] + bytes[2])
+			var y = int((0b1&bytes[1])<<7 + bytes[2])
 			if x == 0 {
 				d.Index = y
 			} else {
@@ -216,8 +212,8 @@ func (d *Duncode) toChars() (chars []rune) {
 			chars = []rune{rune(d.CodePoint)}
 			return chars
 		} else {
-			var x = ShuangJies[d.Symbols[0]]
-			var y = ShuangJies[d.Symbols[1]]
+			var x = rune(blocks[d.BlockId].Began +d.Symbols[0])
+			var y = rune(blocks[d.BlockId].Began +d.Symbols[1])
 			chars = []rune{x, y}
 			return chars
 		}

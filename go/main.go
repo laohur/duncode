@@ -12,7 +12,7 @@ func check(e error) {
 }
 func testDuncode(s string) {
 	for i, x := range []rune(s) {
-		if i==10{
+		if i == 10 {
 			fmt.Println(i)
 		}
 		var a = rune2Duncode(x)
@@ -24,33 +24,51 @@ func testDuncode(s string) {
 	}
 
 }
-func testDuncodeBytes(s string) {
+
+func testDuncodeCompress(s string) (bytes []byte) {
 	var buffer = bytes2.Buffer{}
+	var duncodes = []*Duncode{}
 	var last = &Duncode{}
-	for _, x := range []rune(s) {
-		fmt.Println(x)
-		var now = rune2Duncode(x)
-		if !last.compress(now) {
-			var b = last.toBytes()
-			buffer.Write(b)
-			last = now
+	for i, x := range []rune(s) {
+		if i == 6 {
+			fmt.Println(i)
 		}
-		// else continue
+		var now = rune2Duncode(x)
+		if last.compress(now) {
+			continue
+		}
+		duncodes = append(duncodes, last)
+		var b = last.toBytes()
+		var decoded = &Duncode{}
+		decoded.readBytes(b)
+		var c = decoded.toChars()
+		fmt.Printf(" encode %d %c -->%c \n", i, x, c)
+		buffer.Write(b)
+		last = now
 	}
+	duncodes = append(duncodes, last)
 	var b = last.toBytes()
+	var now = &Duncode{}
+	now.readBytes(b)
+	var c = now.toChars()
+	fmt.Printf(" encode -->%c \n", c)
 	buffer.Write(b)
+	return buffer.Bytes()
 }
 
 func encode(s string) (bytes []byte) {
 	var buffer = bytes2.Buffer{}
 	var last = &Duncode{}
 	for i, x := range []rune(s) {
+		if i == 8 {
+			fmt.Println(i)
+		}
 		var now = rune2Duncode(x)
 		if last.compress(now) {
 			continue
 		}
 		var b = last.toBytes()
-		fmt.Printf(" encode %d %d \n", i, x)
+		fmt.Printf(" encode %d %c \n", i, x)
 		buffer.Write(b)
 		last = now
 	}
@@ -58,6 +76,7 @@ func encode(s string) (bytes []byte) {
 	buffer.Write(b)
 	return buffer.Bytes()
 }
+
 func decode(bytes []byte) (s string) {
 	var line = ""
 	var buffer = bytes2.Buffer{}
@@ -83,11 +102,11 @@ func testLine(s string) {
 }
 
 func main() {
-	var s = "Aÿぃ好乇αβЖΘक़ꌊ걹"
+	var s = "Aÿぃ好乇αβЖѰक़ꌊ걹"
 	fmt.Println(s)
 
-	//testDuncodeBytes(s)
-	testDuncode(s)
+	// testDuncode(s)
+	testDuncodeCompress(s)
 	// testLine(s)
 	fmt.Print("done")
 
