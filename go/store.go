@@ -36,8 +36,8 @@ func loadBlocks() {
 	check(err)
 	var text = string(dat)
 	var doc = strings.Split(text, "\n")
-	var Zone2Id = 0 // zone2
-	var Zone3Id = 0 //zone3
+	var Zone2Id = -1 // zone2
+	var Zone3Id = -1 //zone3
 	for BlockId, t := range doc {
 		var row = strings.Split(t, "\t")
 		if len(row) != 7 {
@@ -55,13 +55,15 @@ func loadBlocks() {
 			Chinese:  row[4],
 			ZoneName: row[5],
 			ZoneId:   ZoneId,
+			Zone2Id:-1,
+			Zone3Id:-1,
 		}
 		if ZoneId == 2 {
-			block.Zone2Id = Zone2Id
 			Zone2Id += 1
+			block.Zone2Id = Zone2Id
 		} else if ZoneId == 3 {
-			block.Zone3Id = Zone3Id
 			Zone3Id += 1
+			block.Zone3Id = Zone3Id
 		}
 		blocks = append(blocks, block)
 	}
@@ -76,16 +78,15 @@ func loadShuangJie() {
 	check(err)
 	var text = string(dat)
 	var doc = strings.Split(text, "\n")
-	for i, t := range doc {
-		s := strings.TrimSpace(t)
+	for i, s := range doc {
 		if len(s) == 0 {
-			continue
+			break
 		}
 		var t = []rune(s)[0]
 		ShuangJies = append(ShuangJies, t)
 		ShuangJieIndex[t] = i
 	}
-	fmt.Printf("loadShuangJie %d done \n", len(ShuangJies))
+	fmt.Printf("loadShuangJie %d done  \n", len(ShuangJies))
 }
 
 func init() {

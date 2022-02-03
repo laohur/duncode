@@ -12,13 +12,15 @@ func check(e error) {
 }
 func testDuncode(s string) {
 	for i, x := range []rune(s) {
+		if i==10{
+			fmt.Println(i)
+		}
 		var a = rune2Duncode(x)
 		var b = a.toBytes()
 		var now = &Duncode{}
 		now.readBytes(b)
 		var c = now.toChars()
-		fmt.Printf("testDuncode %d :" ,i)
-		fmt.Println(string(c))
+		fmt.Printf("testDuncode %d %c --> %d %c \n", i, x, len(b), c[0])
 	}
 
 }
@@ -81,12 +83,12 @@ func testLine(s string) {
 }
 
 func main() {
-	fmt.Println("Hello, 世界")
 	var s = "Aÿぃ好乇αβЖΘक़ꌊ걹"
+	fmt.Println(s)
 
 	//testDuncodeBytes(s)
 	testDuncode(s)
-	//testLine(s)
+	// testLine(s)
 	fmt.Print("done")
 
 }

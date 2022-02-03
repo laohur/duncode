@@ -1,8 +1,2 @@
 
-store:
-
-class Block
-blocks
-ShuangJie
-m := make(map[string]int)
-class Duncode
+Duncode v2 by golang

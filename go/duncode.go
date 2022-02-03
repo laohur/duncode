@@ -28,15 +28,19 @@ func rune2Duncode(char rune) (d *Duncode) {
 	var idx, ok = ShuangJieIndex[char]
 	if ok {
 		duncode.ZoneId = 1
-		duncode.BlockId = 1
-		duncode.Index = idx+128
+		duncode.BlockId = -1
+		duncode.Index = idx
 		return duncode
 	} else {
 		for i, block := range blocks {
 			if block.Began <= point && point <= block.End {
 				duncode.BlockId = i
 				duncode.ZoneId = block.ZoneId
-				duncode.Index = point - block.Began
+				if duncode.ZoneId==4{
+					duncode.Index = point
+				}else{
+					duncode.Index = point - block.Began
+				}
 				return duncode
 			}
 		}
@@ -46,13 +50,13 @@ func rune2Duncode(char rune) (d *Duncode) {
 func (a *Duncode) compress(b *Duncode) (r bool) {
 	if a.BlockId != b.BlockId {
 		return false
-	} else if a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) <= 1 {
+	} else if a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) <= 1 && a.Index != 0 {
 		if len(a.Symbols) == 0 {
 			a.Symbols = []int{a.Index, b.Index}
 		}
 		a.Symbols = append(a.Symbols, b.Index)
 		return true
-	} else if a.ZoneId == 3 && b.ZoneId == 3 && len(a.Symbols) <= 1 {
+	} else if a.ZoneId == 3 && b.ZoneId == 3 && len(a.Symbols) <= 1 && a.Index != 0 {
 		if len(a.Symbols) == 0 {
 			a.Symbols = []int{a.Index, b.Index}
 		}
@@ -73,27 +77,27 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		return []byte{a, b}
 	case 2: //8位字
 		if len(d.Symbols) < 2 {
-			var a byte = byte(0x80) + (byte(blocks[d.Index].Zone2Id)&byte(0x3))<<2
+			var a byte = byte(0xf0) + (byte(blocks[d.BlockId].Zone2Id)&byte(0x3))<<2
 			var b byte = byte(0x80) + byte(d.Index>>7)
 			var c byte = byte(0x7f) & byte(d.Index)
 			return []byte{a, b, c}
 		}
 		var x = byte(d.Symbols[0])
 		var y = byte(d.Symbols[1])
-		var a byte = byte(0x80) + (byte(blocks[d.Index].Zone2Id)&byte(0x3))<<2 + x>>6
+		var a byte = byte(0xf0) + (byte(blocks[d.Index].Zone2Id)&byte(0x3))<<2 + x>>6
 		var b byte = byte(0x80) + x<<2 + y>>7
 		var c byte = byte(0x7f) & y
 		return []byte{a, b, c}
 	case 3: //7位字
 		if len(d.Symbols) < 2 {
-			var a = byte(0x90) + byte(blocks[d.BlockId].Zone3Id)
-			var b = byte(0x80) + byte(d.Index)
+			var a = byte(0x80) + byte(blocks[d.BlockId].Zone3Id)
+			var b = byte(0x80) 
 			var c = byte(d.Index)
 			return []byte{a, b, c}
 		}
 		var x = byte(d.Symbols[0])
 		var y = byte(d.Symbols[1])
-		var a = byte(0x90) + byte(blocks[d.BlockId].Zone3Id)
+		var a = byte(0x80) + byte(blocks[d.BlockId].Zone3Id)
 		var b = byte(0x80) + x
 		var c = y
 		return []byte{a, b, c}
@@ -122,19 +126,20 @@ func (d *Duncode) readBytes(bytes []byte) {
 		d.Index = int(a)<<7 + int(b)
 		d.ZoneId = 1
 		d.BlockId = -1
-		return 
+		return
 	case 3:
 		var a = byte(0x7f) & bytes[0]
-		if a&byte(0xf) == 0 { //8位字
-			var nn = int((a >> 2) & 0b11)
+		if a>>4 == 0b111 { //8位字
+			var nn = int(((a << 4) >> 6))
 			d.ZoneId = 2
 			for _, block := range blocks {
 				if block.Zone2Id == nn {
 					d.BlockId = block.BlockId
+					break
 				}
 			}
-			var b = byte(0x7f) & bytes[1] >> 1
-			var x = int((a&0b11)<<6 + b)
+			var b = (byte(0x7f) & bytes[1]) >> 1
+			var x = int(a<<6 + b)
 			var y = int(0b1&bytes[1] + bytes[2])
 			if x == 0 {
 				d.Index = y
@@ -148,6 +153,7 @@ func (d *Duncode) readBytes(bytes []byte) {
 				if block.Zone3Id == nn {
 					d.ZoneId = 2
 					d.BlockId = block.BlockId
+					break
 				}
 			}
 			var x = int(0x7f & bytes[1])
@@ -202,17 +208,17 @@ func (d *Duncode) toChars() (chars []rune) {
 		return chars
 	case 1:
 		d.CodePoint = int(ShuangJies[d.Index])
-		chars = []rune{rune(d.CodePoint)}
+		chars = []rune{ShuangJies[d.Index]}
 		return chars
 	case 2:
 		if len(d.Symbols) < 2 {
-			d.CodePoint = int(ShuangJies[d.Index])
+			d.CodePoint = blocks[d.BlockId].Began + d.Index
 			chars = []rune{rune(d.CodePoint)}
 			return chars
 		} else {
-			var x = int(ShuangJies[d.Symbols[0]])
-			var y = int(ShuangJies[d.Symbols[1]])
-			chars = []rune{rune(x), rune(y)}
+			var x = ShuangJies[d.Symbols[0]]
+			var y = ShuangJies[d.Symbols[1]]
+			chars = []rune{x, y}
 			return chars
 		}
 	case 3:
