@@ -34,7 +34,10 @@ func testDuncodeCompress(s string) (bytes []byte) {
 			fmt.Println(i)
 		}
 		var now = rune2Duncode(x)
-		if last.compress(now) {
+		if i == 0 {
+			last = now
+			continue
+		} else if last.compress(now) {
 			continue
 		}
 		duncodes = append(duncodes, last)
@@ -42,7 +45,7 @@ func testDuncodeCompress(s string) (bytes []byte) {
 		var decoded = &Duncode{}
 		decoded.readBytes(b)
 		var c = decoded.toChars()
-		fmt.Printf(" encode %d %c -->%c \n", i, x, c)
+		fmt.Printf(" encode %d %c -->%c  bytes %d\n", i, x, c, b)
 		buffer.Write(b)
 		last = now
 	}
@@ -58,21 +61,34 @@ func testDuncodeCompress(s string) (bytes []byte) {
 
 func encode(s string) (bytes []byte) {
 	var buffer = bytes2.Buffer{}
+	// var duncodes = []*Duncode{}
 	var last = &Duncode{}
 	for i, x := range []rune(s) {
-		if i == 8 {
+		if i == 6 {
 			fmt.Println(i)
 		}
 		var now = rune2Duncode(x)
-		if last.compress(now) {
+		if i == 0 {
+			last = now
+			continue
+		} else if last.compress(now) {
 			continue
 		}
+		// duncodes = append(duncodes, last)
 		var b = last.toBytes()
-		fmt.Printf(" encode %d %c \n", i, x)
+		// var decoded = &Duncode{}
+		// decoded.readBytes(b)
+		// var c = decoded.toChars()
+		// fmt.Printf(" encode %d %c -->%c \n", i, x, c)
 		buffer.Write(b)
 		last = now
 	}
+	// duncodes = append(duncodes, last)
 	var b = last.toBytes()
+	// var now = &Duncode{}
+	// now.readBytes(b)
+	// var c = now.toChars()
+	// fmt.Printf(" encode -->%c \n", c)
 	buffer.Write(b)
 	return buffer.Bytes()
 }
@@ -81,6 +97,9 @@ func decode(bytes []byte) (s string) {
 	var line = ""
 	var buffer = bytes2.Buffer{}
 	for i, x := range bytes {
+		if i == 0 {
+			fmt.Println(i)
+		}
 		buffer.WriteByte(x)
 		if x >= 0x80 {
 			continue
@@ -88,8 +107,8 @@ func decode(bytes []byte) (s string) {
 		fmt.Printf(" decode %d %d\n", i, x)
 		var now = Duncode{}
 		now.readBytes(buffer.Bytes())
-		buffer.Reset()
 		var chars = now.toChars()
+		buffer.Reset()
 		line += string(chars)
 	}
 	return line
@@ -106,8 +125,8 @@ func main() {
 	fmt.Println(s)
 
 	// testDuncode(s)
-	testDuncodeCompress(s)
-	// testLine(s)
+	// testDuncodeCompress(s)
+	testLine(s)
 	fmt.Print("done")
 
 }

@@ -69,7 +69,7 @@ func (d *Duncode) toBytes() (bytes []byte) {
 	case 1: //双节
 		var idx uint16 = uint16(d.Index)
 		var a byte = byte(0x80) + byte(idx>>7)
-		var b byte = byte(0x80) + byte(idx&0xff)
+		var b byte = byte(idx&0x7f)
 		return []byte{a, b}
 	case 2: //8位字
 		if len(d.Symbols) < 2 {
