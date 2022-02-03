@@ -64,8 +64,8 @@ func encode(s string) (bytes []byte) {
 	// var duncodes = []*Duncode{}
 	var last = &Duncode{}
 	for i, x := range []rune(s) {
-		if i == 6 {
-			fmt.Println(i)
+		if i == 0 {
+			fmt.Printf(" encode %d ...\n", i)
 		}
 		var now = rune2Duncode(x)
 		if i == 0 {
@@ -98,13 +98,13 @@ func decode(bytes []byte) (s string) {
 	var buffer = bytes2.Buffer{}
 	for i, x := range bytes {
 		if i == 0 {
-			fmt.Println(i)
+			fmt.Printf(" decode %d ...\n", i)
 		}
 		buffer.WriteByte(x)
 		if x >= 0x80 {
 			continue
 		}
-		fmt.Printf(" decode %d %d\n", i, x)
+		// fmt.Printf(" decode %d %d\n", i, x)
 		var now = Duncode{}
 		now.readBytes(buffer.Bytes())
 		var chars = now.toChars()
