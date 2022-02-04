@@ -1,4 +1,4 @@
-package duncode
+package main
 
 import bytes2 "bytes"
 

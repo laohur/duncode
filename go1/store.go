@@ -1,4 +1,4 @@
-package duncode
+package main
 
 import (
 	"fmt"
@@ -31,6 +31,14 @@ type Block struct {
 
 var blocks = make([]Block, 0)
 
+var ZoneName2Id = map[string]int{
+	"ascii": 0,
+	"双节":    1,
+	"8位字":   2,
+	"7位字":   3,
+	"独字":    4,
+}
+
 func loadBlocks() {
 	dat, err := os.ReadFile("Blocks.txt")
 	check(err)
@@ -47,6 +55,10 @@ func loadBlocks() {
 			row[i] = strings.TrimSpace(row[i])
 		}
 		var ZoneId = Int(row[6])
+		var zoneid = ZoneName2Id[row[5]]
+		if ZoneId != zoneid {
+			panic("ZoneId!=zoneid")
+		}
 		var block = Block{Began: Int(row[0]),
 			BlockId:  BlockId,
 			End:      Int(row[1]),

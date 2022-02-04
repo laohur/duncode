@@ -54,7 +54,7 @@
 19E0	19FF	32	Khmer Symbols	高棉符号	7位字	3
 1A00	1A1F	32	Buginese	布吉语	7位字	3
 1A20	1AAF	144	Tai Tham	老傣文	独字	4
-1AB0	1AFF	80	Combining Diacritical Marks Extended	结合变音符号扩展	7位字	3
+1AB0	1AFF	80	Combining Diacritical Marks Extended	结合变音符号扩展	双节	1
 1B00	1B7F	128	Balinese	巴厘语	7位字	3
 1B80	1BBF	64	Sundanese	巽他语	7位字	3
 1BC0	1BFF	64	Batak	巴塔克语	7位字	3
@@ -71,7 +71,7 @@
 1F00	1FFF	256	Greek Extended	希腊语扩展	独字	4
 2000	206F	112	General Punctuation	一般标点符号	双节	1
 2070	209F	48	Superscripts and Subscripts	上标和下标	双节	1
-20A0	20CF	48	Currency Symbols	货币符号	7位字	3
+20A0	20CF	48	Currency Symbols	货币符号	双节	1
 20D0	20FF	48	Combining Diacritical Marks for Symbols	结合符号的变音符号	双节	1
 2100	214F	80	Letterlike Symbols	类字母符号	双节	1
 2150	218F	64	Number Forms	数字形式符号	双节	1
@@ -151,13 +151,13 @@ DB80	DBFF	128	High Private Use Surrogates	高位专用替代	7位字	3
 DC00	DFFF	1024	Low Surrogates	低位专用	独字	4
 E000	F8FF	6400	Private Use Area	私用区	独字	4
 F900	FAFF	512	CJK Compatibility Ideographs	中日韩兼容表意文字	独字	4
-FB00	FB4F	80	Alphabetic Presentation Forms	字母连写形式	7位字	3
+FB00	FB4F	80	Alphabetic Presentation Forms	字母连写形式	双节	1
 FB50	FDFF	688	Arabic Presentation Forms-A	阿拉伯语表现形式-A	独字	4
 FE00	FE0F	16	Variation Selectors	变体选择器	双节	1
 FE10	FE1F	16	Vertical Forms	竖排形式	双节	1
 FE20	FE2F	16	Combining Half Marks	组合用半符号	双节	1
 FE30	FE4F	32	CJK Compatibility Forms	中日韩兼容形式	7位字	3
-FE50	FE6F	32	Small Form Variants	小型变体形式	7位字	3
+FE50	FE6F	32	Small Form Variants	小型变体形式	双节	1
 FE70	FEFF	144	Arabic Presentation Forms-B	阿拉伯语表现形式-B	独字	4
 FF00	FFEF	240	Halfwidth and Fullwidth Forms	全角和半角字符	双节	1
 FFF0	FFFF	16	Specials	特殊字符	7位字	3
@@ -256,7 +256,7 @@ FFF0	FFFF	16	Specials	特殊字符	7位字	3
 1B130	1B16F	64	Small Kana Extension	小型日文假名扩展	双节	1
 1B170	1B2FF	400	Nushu	女书	独字	4
 1BC00	1BC9F	160	Duployan	杜普雷速记	独字	4
-1BCA0	1BCAF	16	Shorthand Format Controls	速记格式控制符	7位字	3
+1BCA0	1BCAF	16	Shorthand Format Controls	速记格式控制符	双节	1
 1D000	1D0FF	256	Byzantine Musical Symbols	拜占庭音乐符号	独字	4
 1D100	1D1FF	256	Musical Symbols	音乐符号	独字	4
 1D200	1D24F	80	Ancient Greek Musical Notation	古希腊音乐记号	7位字	3
@@ -280,7 +280,7 @@ FFF0	FFFF	16	Specials	特殊字符	7位字	3
 1F200	1F2FF	256	Enclosed Ideographic Supplement	带圈表意文字补充	独字	4
 1F300	1F5FF	768	Miscellaneous Symbols and Pictographs	杂项符号和象形文字	独字	4
 1F600	1F64F	80	Emoticons	表情符号	7位字	3
-1F650	1F67F	48	Ornamental Dingbats	装饰符号	7位字	3
+1F650	1F67F	48	Ornamental Dingbats	装饰符号	双节	1
 1F680	1F6FF	128	Transport and Map Symbols	交通和地图符号	7位字	3
 1F700	1F77F	128	Alchemical Symbols	炼金术符号	7位字	3
 1F780	1F7FF	128	Geometric Shapes Extended	几何图形扩展	7位字	3

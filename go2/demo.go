@@ -1,10 +1,10 @@
-package duncode
+package main
 
 import (
 	"fmt"
 )
 
-func demo() {
+func main() {
 	var s = "Aÿぃ好乇αβЖѰक़ꌊ걹"
 	// testDuncode(s)
 	// testDuncodeCompress(s)
