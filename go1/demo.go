@@ -11,7 +11,7 @@ func main() {
 	// testLine(s)
 	var bytes = Encode(s)
 	var t = Decode(bytes)
-	fmt.Printf("duncode :%s --> %s\n", s, t)
+	fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 	fmt.Print("done")
 
 }
