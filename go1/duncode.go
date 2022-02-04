@@ -85,14 +85,14 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		case 3:
 			x = byte(d.Symbols[0])
 			y = byte(d.Symbols[1])
-			z = byte(d.Symbols[z])
+			z = byte(d.Symbols[2])
 			break
 		}
 		// |       2 | 8位字  | 10nnnxxx  | 1xxxxxyy  | 1yyyyyyz | 0zzzzzzz  | x,y,z   | Greek…      |           1.33 |
 		var Zone2Id = blocks[d.BlockId].Zone2Id
-		var a byte = byte(0b10)<<6 + byte(Zone2Id)<<3 + x>>5
+		var a byte = byte(0b10)<<6 | byte(Zone2Id)<<3 | x>>5
 		var b byte = byte(0b1)<<7 | x<<2 | y>>6
-		var c byte = byte(0b1)<<7 | (y<<6)>>1 | z>>7
+		var c byte = byte(0b1)<<7 | y<<1 | z>>7
 		var D byte = byte(0x7f) & z
 		return []byte{a, b, c, D}
 	case 3: //7位字
@@ -110,7 +110,7 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		case 3:
 			x = byte(d.Symbols[0])
 			y = byte(d.Symbols[1])
-			z = byte(d.Symbols[z])
+			z = byte(d.Symbols[2])
 			break
 		}
 		//|       3 | 7位字  | 110nnnnn  | 1xxxxxxx  | 1yyyyyyy | 0zzzzzzz  | x,y,z   | Devanagari… |           1.33 |
@@ -173,9 +173,9 @@ func (d *Duncode) readBytes(bytes []byte) {
 				}
 			}
 			var b = (byte(0x7f) & bytes[1]) >> 2
-			var x = int(a<<5 + b)
-			var y = int((0b1&bytes[1])<<6+(bytes[2])<<1) >> 2
-			var z = int(bytes[2]<<7 + bytes[3])
+			var x = int(a<<5 | b)
+			var y = int( bytes[1]<<6 | (bytes[2]<<1) >> 2 )
+			var z = int(bytes[2]<<7 | bytes[3])
 			if x == 0 && y == 0 {
 				d.Index = z
 			} else if x == 0 {

@@ -121,11 +121,11 @@ func testLine(s string) {
 }
 
 func main() {
-	var s = "Aÿぃ好乇αβЖѰक़ꌊ걹"
+	var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
 	fmt.Println(s)
 
-	testDuncode(s)
-	// testDuncodeCompress(s)
+	// testDuncode(s)
+	testDuncodeCompress(s)
 	// testLine(s)
 	fmt.Print("done")
 
