@@ -18,7 +18,7 @@ type Duncode struct {
 	Symbols   []int
 }
 
-func rune2Duncode(char rune) (d *Duncode) {
+func Rune2Duncode(char rune) (d *Duncode) {
 	var duncode = &Duncode{}
 	var point = int(char)
 	if point < 128 {
@@ -221,11 +221,11 @@ func (d *Duncode) toChars() (chars []rune) {
 	panic("toChars not valid Duncode Zone id")
 }
 
-func encode(s string) (bytes []byte) {
+func Encode(s string) (bytes []byte) {
 	var buffer = bytes2.Buffer{}
 	var last = &Duncode{}
 	for i, x := range []rune(s) {
-		var now = rune2Duncode(x)
+		var now = Rune2Duncode(x)
 		if i == 0 {
 			last = now
 			continue
@@ -241,7 +241,7 @@ func encode(s string) (bytes []byte) {
 	return buffer.Bytes()
 }
 
-func decode(bytes []byte) (s string) {
+func Decode(bytes []byte) (s string) {
 	var line = ""
 	var buffer = bytes2.Buffer{}
 	for _, x := range bytes {

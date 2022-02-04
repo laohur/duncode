@@ -15,7 +15,7 @@ func testDuncode(s string) {
 		if i == 10 {
 			fmt.Println(i)
 		}
-		var a = rune2Duncode(x)
+		var a = Rune2Duncode(x)
 		var b = a.toBytes()
 		var now = &Duncode{}
 		now.readBytes(b)
@@ -33,7 +33,7 @@ func testDuncodeCompress(s string) (bytes []byte) {
 		if i == 6 {
 			fmt.Println(i)
 		}
-		var now = rune2Duncode(x)
+		var now = Rune2Duncode(x)
 		if i == 0 {
 			last = now
 			continue
@@ -67,7 +67,7 @@ func string2bytes(s string) (bytes []byte) {
 		if i == 0 {
 			fmt.Printf(" encode %d ...\n", i)
 		}
-		var now = rune2Duncode(x)
+		var now = Rune2Duncode(x)
 		if i == 0 {
 			last = now
 			continue
