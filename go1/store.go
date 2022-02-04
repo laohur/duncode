@@ -36,7 +36,7 @@ var ZoneName2Id = map[string]int{
 	"双节":    1,
 	"8位字":   2,
 	"7位字":   3,
-	"独字":    4,
+	"孤字":    4,
 }
 
 func loadBlocks() {
