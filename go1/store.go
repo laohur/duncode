@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
+	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -39,8 +42,8 @@ var ZoneName2Id = map[string]int{
 	"孤字":    4,
 }
 
-func loadBlocks() {
-	dat, err := os.ReadFile("Blocks.txt")
+func loadBlocks(path string) {
+	dat, err := os.ReadFile(path)
 	check(err)
 	var text = string(dat)
 	var doc = strings.Split(text, "\n")
@@ -85,8 +88,8 @@ func loadBlocks() {
 var ShuangJies = make([]rune, 0)
 var ShuangJieIndex = make(map[rune]int)
 
-func loadShuangJie() {
-	dat, err := os.ReadFile("ShuangJie.txt")
+func loadShuangJie(path string) {
+	dat, err := os.ReadFile(path)
 	check(err)
 	var text = string(dat)
 	var doc = strings.Split(text, "\n")
@@ -101,11 +104,29 @@ func loadShuangJie() {
 	fmt.Printf("loadShuangJie %d done  \n", len(ShuangJies))
 }
 
+func GetCurrPath() string {
+	file, _ := exec.LookPath(os.Args[0])
+	path, _ := filepath.Abs(file)
+	index := strings.LastIndex(path, string(os.PathSeparator))
+	ret := path[:index]
+	return ret
+}
+
 func init() {
 	fmt.Println("\nHello, store")
-	loadBlocks()
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	fmt.Println(exPath)
+	// fmt.Println(GetCurrPath())
+	var block_path = path.Join(exPath, "Blocks.txt")
+	loadBlocks(block_path)
 	// fmt.Println(len(blocks))
-	loadShuangJie()
+	// var shuangjie_path = "ShuangJie.txt"
+	var shuangjie_path = path.Join(exPath, "ShuangJie.txt")
+	loadShuangJie(shuangjie_path)
 	// fmt.Println(len(ShuangJieIndex))
 	fmt.Println("store loaded\n")
 

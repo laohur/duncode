@@ -8,6 +8,7 @@ import (
 )
 
 func EncodeFile(src, tgt string) {
+	log.Printf("EncodeFile src:%s --> tgt:%s started \n", src, tgt)
 	file, err := os.Open(src)
 	if err != nil {
 		log.Fatal(err)
@@ -48,24 +49,21 @@ func EncodeFile(src, tgt string) {
 	}
 }
 
-func demo() {
-	// var s = "Aÿぃ好乇αβЖѰक़ꌊ걹"
-	// testDuncode(s)
-	// testDuncodeCompress(s)
-	// testLine(s)
-	// var bytes = Encode(s)
-	// var t = Decode(bytes)
-	// fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
-	var src = "C:/data/sentences.csv"
-	var tgt = src + ".duncode2"
-	EncodeFile(src, tgt)
+func main1() {
+	var s = "Aÿぃ好乇αβЖѰक़ꌊ걹"
+	testDuncode(s)
+	testDuncodeCompress(s)
+	testLine(s)
+
+	// var src = "C:/data/sentences.csv"
+	// var tgt = src + ".duncode1"
+	// EncodeFile(src, tgt)
 	fmt.Print("done")
 
 }
 
-
 func main() {
-	// var s = "Aÿぃ好乇αβЖѰक़ꌊ걹"
+	// var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
 	// testDuncode(s)
 	// testDuncodeCompress(s)
 	// testLine(s)
@@ -73,11 +71,12 @@ func main() {
 	// var t = Decode(bytes)
 	// fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 	args := os.Args
-	var src=args[1]
-	var tgt=args[2]
+	var src = args[1]
+	var tgt = args[2]
 	// var src = "C:/data/sentences.csv"
-	// var tgt = src + ".duncode2"
+	// var tgt = src + ".duncode1"
+	// log.Printf("done")
 	EncodeFile(src, tgt)
-	fmt.Print("done")
+	// log.Printf("done")
 
 }
