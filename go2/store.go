@@ -36,7 +36,7 @@ var ZoneName2Id = map[string]int{
 	"双节":    1,
 	"8位字":   2,
 	"7位字":   3,
-	"独字":    4,
+	"孤字":    4,
 }
 
 func loadBlocks() {
@@ -48,17 +48,17 @@ func loadBlocks() {
 	var Zone3Id = -1 //zone3
 	for BlockId, t := range doc {
 		var row = strings.Split(t, "\t")
-		if len(row) != 7 {
+		if len(row) < 6 {
 			continue
 		}
-		for i := 0; i < 7; i += 1 {
+		for i := 0; i < 6; i += 1 {
 			row[i] = strings.TrimSpace(row[i])
 		}
-		var ZoneId = Int(row[6])
-		var zoneid = ZoneName2Id[row[5]]
-		if ZoneId != zoneid {
-			panic("ZoneId!=zoneid")
-		}
+		// var ZoneId = Int(row[6])
+		var ZoneId = ZoneName2Id[row[5]]
+		// if ZoneId != zoneid {
+		// 	panic("ZoneId!=zoneid")
+		// }
 		var block = Block{Began: Int(row[0]),
 			BlockId:  BlockId,
 			End:      Int(row[1]),

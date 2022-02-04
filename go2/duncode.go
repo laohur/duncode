@@ -2,14 +2,6 @@ package main
 
 import bytes2 "bytes"
 
-// ZoneIdMap = {
-//     "ascii": 0,  # BlockId 0
-//     "双节": 1,  # lanid 1
-//     "8位字": 2,
-//     "7位字": 3,
-//     "独字": 4
-// }
-
 type Duncode struct {
 	CodePoint int
 	ZoneId    int
@@ -21,14 +13,14 @@ type Duncode struct {
 func Rune2Duncode(char rune) (d *Duncode) {
 	var duncode = &Duncode{}
 	var point = int(char)
-	if point < 128 {
+	if point < 128 { // ascii
 		duncode.ZoneId = 0
 		duncode.BlockId = 0
 		duncode.Index = point
 		return duncode
 	}
 	var idx, ok = ShuangJieIndex[char]
-	if ok {
+	if ok { // 双节
 		duncode.ZoneId = 1
 		duncode.BlockId = -1
 		duncode.Index = idx
@@ -38,9 +30,9 @@ func Rune2Duncode(char rune) (d *Duncode) {
 			if block.Began <= point && point <= block.End {
 				duncode.BlockId = i
 				duncode.ZoneId = block.ZoneId
-				if duncode.ZoneId == 4 {
+				if duncode.ZoneId == 4 { //孤字
 					duncode.Index = point
-				} else {
+				} else { //8位字、7位字
 					duncode.Index = point - block.Began
 				}
 				return duncode
@@ -49,17 +41,14 @@ func Rune2Duncode(char rune) (d *Duncode) {
 	}
 	return duncode
 }
+
 func (a *Duncode) compress(b *Duncode) (r bool) {
-	if a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) <= 1 && a.Index != 0 {
-		if len(a.Symbols) == 0 {
-			a.Symbols = []int{a.Index, b.Index}
-			return true
-		}
-	} else if a.ZoneId == 3 && b.ZoneId == 3 && len(a.Symbols) <= 1 && a.Index != 0 {
-		if len(a.Symbols) == 0 {
-			a.Symbols = []int{a.Index, b.Index}
-			return true
-		}
+	if a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) < 2 && a.Index != 0 {
+		a.Symbols = []int{a.Index, b.Index}
+		return true
+	} else if a.ZoneId == 3 && b.ZoneId == 3 && len(a.Symbols) < 2 && a.Index != 0 {
+		a.Symbols = []int{a.Index, b.Index}
+		return true
 	}
 	return false
 }
@@ -100,12 +89,12 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		var c = y
 		return []byte{a, b, c}
 
-	case 4: //独字
+	case 4: //孤字
 		var a = byte(0x80) + byte(d.Index>>21)&byte(0x7f)
 		var b = byte(0x80) + byte(d.Index>>14)&byte(0x7f)
 		var c = byte(0x80) + byte(d.Index>>7)&byte(0x7f)
-		var d = byte(d.Index) & byte(0x7f)
-		return []byte{a, b, c, d}
+		var D = byte(d.Index) & byte(0x7f)
+		return []byte{a, b, c, D}
 	}
 	panic("toBytes not valid Duncode Zone id")
 }
@@ -163,7 +152,7 @@ func (d *Duncode) readBytes(bytes []byte) {
 			}
 			return
 		}
-	case 4: //独字
+	case 4: //孤字
 		var a = byte(0x7f) & bytes[0]
 		var b = byte(0x7f) & bytes[1]
 		var c = byte(0x7f) & bytes[2]
