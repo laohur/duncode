@@ -117,13 +117,12 @@ func bytes2string(bytes []byte) (s string) {
 func testLine(s string) {
 	var bytes = string2bytes(s)
 	var t = bytes2string(bytes)
-	fmt.Println(t)
+	fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 }
 
-func test() {
+func main() {
 	var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
 	fmt.Println(s)
-
 	// testDuncode(s)
 	// testDuncodeCompress(s)
 	testLine(s)

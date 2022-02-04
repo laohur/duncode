@@ -13,6 +13,7 @@ type Duncode struct {
 func Rune2Duncode(char rune) (d *Duncode) {
 	var duncode = &Duncode{}
 	var point = int(char)
+	duncode.CodePoint = point
 	if point < 128 { // ascii
 		duncode.ZoneId = 0
 		duncode.BlockId = 0
@@ -76,8 +77,12 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		var z = byte(0)
 		switch len(d.Symbols) {
 		case 0:
-			z = byte(d.Index)
-			break
+			// z = byte(d.Index)
+			// break
+			var a = byte(0x80) + byte(d.CodePoint>>14)&byte(0x7f)
+			var b = byte(0x80) + byte(d.CodePoint>>7)&byte(0x7f)
+			var c = byte(d.CodePoint) & byte(0x7f)
+			return []byte{a, b, c}			
 		case 2:
 			y = byte(d.Symbols[0])
 			z = byte(d.Symbols[1])
@@ -101,8 +106,12 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		var z = byte(0)
 		switch len(d.Symbols) {
 		case 0:
-			z = byte(d.Index)
-			break
+			// z = byte(d.Index)
+			// break
+			var a = byte(0x80) + byte(d.CodePoint>>14)&byte(0x7f)
+			var b = byte(0x80) + byte(d.CodePoint>>7)&byte(0x7f)
+			var c = byte(d.CodePoint) & byte(0x7f)
+			return []byte{a, b, c}
 		case 2:
 			y = byte(d.Symbols[0])
 			z = byte(d.Symbols[1])
@@ -159,7 +168,7 @@ func (d *Duncode) readBytes(bytes []byte) {
 		d.Index = idx
 		d.ZoneId = 4
 		d.BlockId = -1
-		return		
+		return
 	case 4:
 		var a = byte(0x7f) & bytes[0]
 		if a>>6 == 0b00 { //8位字
@@ -174,7 +183,7 @@ func (d *Duncode) readBytes(bytes []byte) {
 			}
 			var b = (byte(0x7f) & bytes[1]) >> 2
 			var x = int(a<<5 | b)
-			var y = int( bytes[1]<<6 | (bytes[2]<<1) >> 2 )
+			var y = int(bytes[1]<<6 | (bytes[2]<<1)>>2)
 			var z = int(bytes[2]<<7 | bytes[3])
 			if x == 0 && y == 0 {
 				d.Index = z
@@ -221,7 +230,7 @@ func (d *Duncode) toChars() (chars []rune) {
 		chars = []rune{ShuangJies[d.Index]}
 		return chars
 	case 2:
-		if len(d.Symbols) ==0 {
+		if len(d.Symbols) == 0 {
 			d.CodePoint = blocks[d.BlockId].Began + d.Index
 			chars = []rune{rune(d.CodePoint)}
 			return chars
@@ -229,14 +238,14 @@ func (d *Duncode) toChars() (chars []rune) {
 			var x = rune(blocks[d.BlockId].Began + d.Symbols[0])
 			var y = rune(blocks[d.BlockId].Began + d.Symbols[1])
 			chars = []rune{x, y}
-			if len(d.Symbols)==3{
+			if len(d.Symbols) == 3 {
 				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
-				chars=append(chars,z)
+				chars = append(chars, z)
 			}
 			return chars
 		}
 	case 3:
-		if len(d.Symbols) ==0 {
+		if len(d.Symbols) == 0 {
 			d.CodePoint = blocks[d.BlockId].Began + d.Index
 			chars = []rune{rune(d.CodePoint)}
 			return chars
@@ -244,9 +253,9 @@ func (d *Duncode) toChars() (chars []rune) {
 			var x = blocks[d.BlockId].Began + d.Symbols[0]
 			var y = blocks[d.BlockId].Began + d.Symbols[1]
 			chars = []rune{rune(x), rune(y)}
-			if len(d.Symbols)==3{
+			if len(d.Symbols) == 3 {
 				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
-				chars=append(chars,rune(z))
+				chars = append(chars, rune(z))
 			}
 			return chars
 		}
