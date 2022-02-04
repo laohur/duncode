@@ -8,7 +8,7 @@ cpp
 java
 
 ## v2
-python
+go
 
 
 ## performance of encoders (v1)
