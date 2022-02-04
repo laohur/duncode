@@ -20,4 +20,8 @@ if __name__ == "__main__":
     size1 = encoderFile(src, tgt, duncoder1)
     tgt = src + ".duncode2"
     size2 = encoderFile(src, tgt, duncoder2)
-    logger.info(f"{src} {size0} -->{size1} {size0}")
+    logger.info(f"{src} {size0} -->{size1} {size1}")
+
+"""
+
+"""

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import lzma
 import sys
 import traceback
 import glob
@@ -16,104 +17,58 @@ from logzero import logger
 import gzip
 
 
-def read_gz(p):
-    input = gzip.open(p)
-    while True:
-        line = input.readline()
-        if not line:
-            break
-        yield line
+def extract_wiki(src, tgt):
+    with lzma.open(src, mode="rt") as f:
+        doc = f.readlines(1024*1024*1)
+    with open(tgt, "w") as w:
+        w.writelines(doc)
 
-
-def extract_wiki(param):
-    src, tgt = param
-    xz = tgt+'.xz'
-    # if not os.path.exists(tgt) and os.path.exists(xz):
-    # return f" {xz} exists"
-    # return ''
-    for p in [tgt, xz]:
-        if os.path.exists(p):
-            os.remove(p)
-    logger.info(f"{src}  -->  {tgt} ...")
-    i = 0
-    with open(tgt, 'w') as f:
-        input = gzip.open(src, mode='rt', errors='ignore')
-        while True:
-            a = ''
-            i += 1
-            try:
-                a = input.readline()
-                if not a:
-                    break
-                # b = input.readline()
-                content = json.loads(a)
-                if 'text' not in content:
-                    continue
-                # type = index['index']['_type']
-                # id = index['index']['_id']
-                # language = content['language']
-                # revision = content['version']
-                # if type == 'page' and content['namespace'] == 0:
-                # title = content['title']
-                # text = content['text']
-                # drop references:
-                # ^ The Penguin Dictionary
-                if 'text' in content:
-                    text = content['text']
-                    text = re.sub(r'  \^ .*', '', text).strip()
-                    f.write(text+'\n\n')
-            except Exception as e:
-                logger.error(e)
-            if not a:
-                break
-    os.system(f"xz {tgt}")
-    logger.info(f"{src}  -->  {tgt} lines:{i}")
+    logger.info(f"{src}  -->  {tgt} lines:{len(doc)}")
     return tgt
 
 
-def mparse():
-
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--lang', default="global",  type=str)
-    args = parser.parse_args()
-    print(args)
-    lang = args.lang
-    gzs = list(glob.iglob(
-        f"F:/data/wiki-20220124-cirrussearch-content.json.gz/*.gz", recursive=True))
-
-    params = []
-    for src in gzs:
+def extract_wikis():
+    doc = []
+    tail = "wiki-20220124-cirrussearch-content.txt.xz"
+    tgt_dir = "C:/data/wiki-1m"
+    files = glob.glob(
+        rf"F:/data/wiki-20220124-cirrussearch-content-txt-xz/*{tail}")
+    for src in files:
         name = os.path.basename(src)
-        src = "F:/data/wiki-20220124-cirrussearch-content-json-gz/"+name
-        if not os.path.exists(src):
+        if name[2:] != tail:
             continue
-        t = name.rstrip(".json.gz")
-        tgt = "F:/data/wiki-20220124-cirrussearch-content-txt-xz/"+t+'.txt'
-        param = (src, tgt)
-        params.append(param)
-
-    random.shuffle(params)
-    import multiprocessing
-    with multiprocessing.Pool(6) as pool:
-        re = pool.imap_unordered(extract_wiki, params)
-        for x in re:
-            logger.info(x)
+        lang = name[:2]
+        tgt = f"{tgt_dir}/{lang}.txt"
+        extract_wiki(src, tgt)
+    return doc
 
 
-def parse_all():
-    from download import get_names
-    names = get_names()
-    for name in names:
-        src = "F:/data/wiki-20220124-cirrussearch-content-json-gz/"+name
-        if not os.path.exists(src):
-            continue
-        t = name.rstrip(".json.gz")
-        tgt = "F:/data/wiki-20220124-cirrussearch-content-txt-xz/"+t+'.txt'
-        extract_wiki((src, tgt))
-        # break
+duncoder1 = "C:/doc/duncode/code/duncode/go1/go1.exe"
+duncoder2 = "C:/doc/duncode/code/duncode/go2/go2.exe"
+
+
+def encoderFile(src, tgt, duncoder):
+    cmd = f"{duncoder} {src} {tgt}"
+    os.system(cmd)
+    size = os.path.getsize(tgt)
+    return size
+
+
+def encode_wikis():
+    doc = []
+    tgt1_dir = "C:/data/duncoder1"
+    tgt2_dir = "C:/data/duncoder2"
+    files = glob.glob(
+        rf"C:/data/wiki-1m/*.txt")
+    for src in files:
+        name = os.path.basename(src)
+        lang = name[:2]
+        tgt = f"{tgt1_dir}/{lang}.txt"
+        encoderFile(src, tgt, duncoder1)
+        tgt = f"{tgt2_dir}/{lang}.txt"
+        encoderFile(src, tgt, duncoder2)
+    return doc
 
 
 if __name__ == '__main__':
-    # mparse()
-    parse_all()
+    encode_wikis()
