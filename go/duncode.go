@@ -1,5 +1,7 @@
 package main
 
+import bytes2 "bytes"
+
 // ZoneIdMap = {
 //     "ascii": 0,  # BlockId 0
 //     "双节": 1,  # lanid 1
@@ -69,7 +71,7 @@ func (d *Duncode) toBytes() (bytes []byte) {
 	case 1: //双节
 		var idx uint16 = uint16(d.Index)
 		var a byte = byte(0x80) + byte(idx>>7)
-		var b byte = byte(idx&0x7f)
+		var b byte = byte(idx & 0x7f)
 		return []byte{a, b}
 	case 2: //8位字
 		if len(d.Symbols) < 2 {
@@ -81,7 +83,7 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		var x = byte(d.Symbols[0])
 		var y = byte(d.Symbols[1])
 		var a byte = byte(0xf0) + (byte(blocks[d.BlockId].Zone2Id)&byte(0x3))<<2 + x>>6
-		var b byte = byte(0x80)| x<<1 + y>>7
+		var b byte = byte(0x80) | x<<1 + y>>7
 		var c byte = byte(0x7f) & y
 		return []byte{a, b, c}
 	case 3: //7位字
@@ -179,23 +181,6 @@ func (d *Duncode) readBytes(bytes []byte) {
 	panic("readBytes not valid Duncode Zone id")
 }
 
-//func (d *Duncode) extract() (ds []*Duncode) {
-//	switch d.ZoneId {
-//	case 0:
-//		ds=[]*Duncode{d}
-//		return
-//	case 1:
-//		ds=[]*Duncode{d}
-//		return
-//	case 2:
-//		if len(d.Symbols)<2{
-//			ds=[]*Duncode{d}
-//		}else{
-//
-//		}
-//
-//	}
-//}
 func (d *Duncode) toChars() (chars []rune) {
 	switch d.ZoneId {
 	case 0:
@@ -212,8 +197,8 @@ func (d *Duncode) toChars() (chars []rune) {
 			chars = []rune{rune(d.CodePoint)}
 			return chars
 		} else {
-			var x = rune(blocks[d.BlockId].Began +d.Symbols[0])
-			var y = rune(blocks[d.BlockId].Began +d.Symbols[1])
+			var x = rune(blocks[d.BlockId].Began + d.Symbols[0])
+			var y = rune(blocks[d.BlockId].Began + d.Symbols[1])
 			chars = []rune{x, y}
 			return chars
 		}
@@ -234,4 +219,41 @@ func (d *Duncode) toChars() (chars []rune) {
 		return chars
 	}
 	panic("toChars not valid Duncode Zone id")
+}
+
+func encode(s string) (bytes []byte) {
+	var buffer = bytes2.Buffer{}
+	var last = &Duncode{}
+	for i, x := range []rune(s) {
+		var now = rune2Duncode(x)
+		if i == 0 {
+			last = now
+			continue
+		} else if last.compress(now) {
+			continue
+		}
+		var b = last.toBytes()
+		buffer.Write(b)
+		last = now
+	}
+	var b = last.toBytes()
+	buffer.Write(b)
+	return buffer.Bytes()
+}
+
+func decode(bytes []byte) (s string) {
+	var line = ""
+	var buffer = bytes2.Buffer{}
+	for _, x := range bytes {
+		buffer.WriteByte(x)
+		if x >= 0x80 {
+			continue
+		}
+		var now = Duncode{}
+		now.readBytes(buffer.Bytes())
+		var chars = now.toChars()
+		buffer.Reset()
+		line += string(chars)
+	}
+	return line
 }

@@ -55,8 +55,8 @@ func loadBlocks() {
 			Chinese:  row[4],
 			ZoneName: row[5],
 			ZoneId:   ZoneId,
-			Zone2Id:-1,
-			Zone3Id:-1,
+			Zone2Id:  -1,
+			Zone3Id:  -1,
 		}
 		if ZoneId == 2 {
 			Zone2Id += 1
@@ -90,11 +90,11 @@ func loadShuangJie() {
 }
 
 func init() {
-	fmt.Println("Hello, store")
+	fmt.Println("\nHello, store")
 	loadBlocks()
-	fmt.Println(len(blocks))
+	// fmt.Println(len(blocks))
 	loadShuangJie()
-	fmt.Println(len(ShuangJieIndex))
-	fmt.Println("store loaded")
+	// fmt.Println(len(ShuangJieIndex))
+	fmt.Println("store loaded\n")
 
 }
