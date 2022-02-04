@@ -61,8 +61,7 @@ func demo() {
 
 }
 
-
-func main0() {
+func main() {
 	// var s = "Aÿぃ好乇αβЖѰक़ꌊ걹"
 	// testDuncode(s)
 	// testDuncodeCompress(s)
@@ -71,8 +70,8 @@ func main0() {
 	// var t = Decode(bytes)
 	// fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 	args := os.Args
-	var src=args[1]
-	var tgt=args[2]
+	var src = args[1]
+	var tgt = args[2]
 	// var src = "C:/data/sentences.csv"
 	// var tgt = src + ".duncode1"
 	EncodeFile(src, tgt)

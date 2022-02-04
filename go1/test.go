@@ -120,7 +120,7 @@ func testLine(s string) {
 	fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 }
 
-func main() {
+func main0() {
 	var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
 	fmt.Println(s)
 	// testDuncode(s)
