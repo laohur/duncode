@@ -27,9 +27,9 @@ func Rune2Duncode(char rune) (d *Duncode) {
 		duncode.Index = idx
 		return duncode
 	} else {
-		for i, block := range blocks {
+		for _, block := range blocks {
 			if block.Began <= point && point <= block.End {
-				duncode.BlockId = i
+				duncode.BlockId = block.BlockId
 				duncode.ZoneId = block.ZoneId
 				if duncode.ZoneId == 4 { //孤字
 					duncode.Index = point
@@ -44,14 +44,14 @@ func Rune2Duncode(char rune) (d *Duncode) {
 }
 
 func (a *Duncode) compress(b *Duncode) (r bool) {
-	if a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) < 3 && a.Index != 0 {
+	if a.BlockId == b.BlockId && a.ZoneId == 2 && b.ZoneId == 2 && len(a.Symbols) < 3 && a.Index != 0 {
 		if len(a.Symbols) == 0 {
 			a.Symbols = []int{a.Index, b.Index}
 		} else {
 			a.Symbols = append(a.Symbols, b.Index)
 		}
 		return true
-	} else if a.ZoneId == 3 && b.ZoneId == 3 && len(a.Symbols) < 3 && a.Index != 0 {
+	} else if a.BlockId == b.BlockId && a.ZoneId == 3 && b.ZoneId == 3 && len(a.Symbols) < 3 && a.Index != 0 {
 		if len(a.Symbols) == 0 {
 			a.Symbols = []int{a.Index, b.Index}
 		} else {
@@ -82,7 +82,7 @@ func (d *Duncode) toBytes() (bytes []byte) {
 			var a = byte(0x80) + byte(d.CodePoint>>14)&byte(0x7f)
 			var b = byte(0x80) + byte(d.CodePoint>>7)&byte(0x7f)
 			var c = byte(d.CodePoint) & byte(0x7f)
-			return []byte{a, b, c}			
+			return []byte{a, b, c}
 		case 2:
 			y = byte(d.Symbols[0])
 			z = byte(d.Symbols[1])
@@ -125,8 +125,8 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		//|       3 | 7位字  | 110nnnnn  | 1xxxxxxx  | 1yyyyyyy | 0zzzzzzz  | x,y,z   | Devanagari… |           1.33 |
 		var Zone3Id = blocks[d.BlockId].Zone3Id
 		var a byte = byte(0b110)<<5 | byte(Zone3Id)
-		var b byte = byte(0b1)<<7 + x
-		var c byte = byte(0b1)<<7 + y
+		var b byte = byte(0b1)<<7 | x
+		var c byte = byte(0b1)<<7 | y
 		var D byte = z
 		return []byte{a, b, c, D}
 
