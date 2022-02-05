@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	_ "path"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -123,12 +123,12 @@ func init() {
 	exPath := filepath.Dir(ex)
 	fmt.Println(exPath)
 	// fmt.Println(GetCurrPath())
-	var block_path = "Blocks.txt"
-	// var block_path = path.Join(exPath, "Blocks.txt")
+	// var block_path = "Blocks.txt"
+	var block_path = path.Join(exPath, "Blocks.txt")
 	loadBlocks(block_path)
 	// fmt.Println(len(blocks))
-	var shuangjie_path = "ShuangJie.txt"
-	// var shuangjie_path = path.Join(exPath, "ShuangJie.txt")
+	// var shuangjie_path = "ShuangJie.txt"
+	var shuangjie_path = path.Join(exPath, "ShuangJie.txt")
 	loadShuangJie(shuangjie_path)
 	// fmt.Println(len(ShuangJieIndex))
 	fmt.Println("store loaded\n")

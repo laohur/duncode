@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	_ "path"
+	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
 )
 
-func Int(num string) (n int) {
-	a, err := strconv.ParseInt(num, 16, 64)
+func Int(num string, base int) (n int) {
+	a, err := strconv.ParseInt(num, base, 64)
 	// check(err)
 	if err != nil {
 		panic(err)
@@ -27,21 +27,37 @@ type Block struct {
 	English  string
 	Chinese  string
 	ZoneName string
+	Mother   string
+	MotherId int
+	Offset   int
+	Child    []string
 	ZoneId   int
 	Zone2Id  int
 	Zone3Id  int
 }
 
-var blocks = make([]Block, 0)
+var blocks = make([]*Block, 0)
 
 var ZoneName2Id = map[string]int{
 	"ascii": 0,
 	"双节":    1,
-	"8位字":   2,
-	"7位字":   3,
+	"八位字":   2,
+	"七位字":   3,
 	"孤字":    4,
 }
+var BlockName2Id = make(map[string]int)
+var Children = make(map[string]*[]string)
 
+func Split(s string,sep rune)([]string){
+	splitFn := func(c rune) bool {
+		return c == sep
+    }
+    // fmt.Printf("Fields are: %q\n", s.FieldsFunc("a,,b,c", splitFn))
+	var t= strings.FieldsFunc(s, splitFn)
+	return t
+}
+
+// fields = [began, end, size, en, ch, zone, mother, offset, child]
 func loadBlocks(path string) {
 	dat, err := os.ReadFile(path)
 	check(err)
@@ -51,38 +67,50 @@ func loadBlocks(path string) {
 	var Zone3Id = -1 //zone3
 	for BlockId, t := range doc {
 		var row = strings.Split(t, "\t")
-		if len(row) < 6 {
+		if len(row) < 8 {
 			continue
 		}
-		for i := 0; i < 6; i += 1 {
+		for i := 0; i < len(row); i += 1 {
 			row[i] = strings.TrimSpace(row[i])
 		}
-		// var ZoneId = Int(row[6])
 		var ZoneId = ZoneName2Id[row[5]]
-		// if ZoneId != zoneid {
-		// 	panic("ZoneId!=zoneid")
-		// }
+		
+		var child=Split(row[8], ';')
 		var block = Block{
-			BlockId: BlockId,
-			Began:   Int(row[0]),
-			End:     Int(row[1]),
-			// Size:     Int(row[2]),
+			BlockId:  BlockId,
+			Began:    Int(row[0], 16),
+			End:      Int(row[1], 16),
+			Size:     -1,
 			English:  row[3],
 			Chinese:  row[4],
 			ZoneName: row[5],
 			ZoneId:   ZoneId,
+			Mother:   row[6],
+			MotherId: -1,
+			Offset:   Int(row[7], 10),
+			Child:    child,
 			Zone2Id:  -1,
 			Zone3Id:  -1,
 		}
+		BlockName2Id[block.Chinese] = BlockId
 		block.Size = block.End - block.Began + 1
 		if ZoneId == 2 {
-			Zone2Id += 1
-			block.Zone2Id = Zone2Id
+			block.MotherId=BlockName2Id[block.Mother]
+			if block.Mother==block.Chinese  {
+				Zone2Id += 1
+				block.Zone2Id = Zone2Id
+			} 
 		} else if ZoneId == 3 {
-			Zone3Id += 1
-			block.Zone3Id = Zone3Id
+			block.MotherId=BlockName2Id[block.Mother]
+			if block.Mother==block.Chinese  {
+				Zone3Id += 1
+				block.Zone3Id = Zone3Id
+			}
 		}
-		blocks = append(blocks, block)
+		if len(block.Child)>0{
+			Children[block.Chinese]=&block.Child
+		}
+		blocks = append(blocks,& block)
 	}
 	fmt.Printf("loadBlocks %d done \n", len(blocks))
 }
@@ -114,8 +142,7 @@ func GetCurrPath() string {
 	return ret
 }
 
-func init() {
-	fmt.Println("\nHello, store")
+func getPath(name string) string {
 	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
@@ -123,12 +150,20 @@ func init() {
 	exPath := filepath.Dir(ex)
 	fmt.Println(exPath)
 	// fmt.Println(GetCurrPath())
+	// var block_path = "Blocks.txt"
+	var path = path.Join(exPath, name)
+	return path
+}
+
+func init() {
+	fmt.Println("\nHello, store")
+	// fmt.Println(GetCurrPath())
 	var block_path = "Blocks.txt"
-	// var block_path = path.Join(exPath, "Blocks.txt")
+	// block_path = getPath(block_path)
 	loadBlocks(block_path)
 	// fmt.Println(len(blocks))
 	var shuangjie_path = "ShuangJie.txt"
-	// var shuangjie_path = path.Join(exPath, "ShuangJie.txt")
+	// shuangjie_path = getPath(shuangjie_path)
 	loadShuangJie(shuangjie_path)
 	// fmt.Println(len(ShuangJieIndex))
 	fmt.Println("store loaded\n")
