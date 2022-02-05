@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path"
+	_ "path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -62,10 +62,11 @@ func loadBlocks(path string) {
 		// if ZoneId != zoneid {
 		// 	panic("ZoneId!=zoneid")
 		// }
-		var block = Block{Began: Int(row[0]),
-			BlockId:  BlockId,
-			End:      Int(row[1]),
-			Size:     Int(row[2]),
+		var block = Block{
+			BlockId: BlockId,
+			Began:   Int(row[0]),
+			End:     Int(row[1]),
+			// Size:     Int(row[2]),
 			English:  row[3],
 			Chinese:  row[4],
 			ZoneName: row[5],
@@ -73,6 +74,7 @@ func loadBlocks(path string) {
 			Zone2Id:  -1,
 			Zone3Id:  -1,
 		}
+		block.Size = block.End - block.Began + 1
 		if ZoneId == 2 {
 			Zone2Id += 1
 			block.Zone2Id = Zone2Id
@@ -121,11 +123,12 @@ func init() {
 	exPath := filepath.Dir(ex)
 	fmt.Println(exPath)
 	// fmt.Println(GetCurrPath())
-	var block_path = path.Join(exPath, "Blocks.txt")
+	var block_path = "Blocks.txt"
+	// var block_path = path.Join(exPath, "Blocks.txt")
 	loadBlocks(block_path)
 	// fmt.Println(len(blocks))
-	// var shuangjie_path = "ShuangJie.txt"
-	var shuangjie_path = path.Join(exPath, "ShuangJie.txt")
+	var shuangjie_path = "ShuangJie.txt"
+	// var shuangjie_path = path.Join(exPath, "ShuangJie.txt")
 	loadShuangJie(shuangjie_path)
 	// fmt.Println(len(ShuangJieIndex))
 	fmt.Println("store loaded\n")

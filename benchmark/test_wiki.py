@@ -48,7 +48,7 @@ duncoder2 = "C:/doc/duncode/code/duncode/go2/go2.exe"
 
 
 def encoderFile(src, tgt, duncoder):
-    cmd = f"{duncoder} {src} {tgt}"
+    cmd = f"{duncoder} {src} {tgt} debug"
     os.system(cmd)
     size = os.path.getsize(tgt)
     return size
