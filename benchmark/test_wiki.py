@@ -16,38 +16,13 @@ from logzero import logger
 
 import gzip
 
-
-def extract_wiki(src, tgt):
-    with lzma.open(src, mode="rt") as f:
-        doc = f.readlines(1024*1024*1)
-    with open(tgt, "w") as w:
-        w.writelines(doc)
-
-    logger.info(f"{src}  -->  {tgt} lines:{len(doc)}")
-    return tgt
-
-
-def extract_wikis():
-    doc = []
-    tail = "wiki-20220124-cirrussearch-content.txt.xz"
-    tgt_dir = "C:/data/wiki-1m"
-    files = glob.glob(
-        rf"F:/data/wiki-20220124-cirrussearch-content-txt-xz/*{tail}")
-    for src in files:
-        name = os.path.basename(src)
-        if name[2:] != tail:
-            continue
-        lang = name[:2]
-        tgt = f"{tgt_dir}/{lang}.txt"
-        extract_wiki(src, tgt)
-    return doc
-
-
 duncoder1 = "C:/doc/duncode/code/duncode/go1/go1.exe"
 duncoder2 = "C:/doc/duncode/code/duncode/go2/go2.exe"
 
 
 def encoderFile(src, tgt, duncoder):
+    if os.path.exists(tgt):
+        logger.info(f"{tgt} exists ")
     cmd = f"{duncoder} {src} {tgt} debug"
     os.system(cmd)
     size = os.path.getsize(tgt)

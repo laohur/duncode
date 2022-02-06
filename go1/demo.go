@@ -64,8 +64,7 @@ func EncodeFile(src, tgt string, debug bool) {
 }
 
 func main1() {
-	var s = "Aÿぃ好乇αβζβЖѰѾѾक़ऄळ४ॐꌊ걹"
-	// s = "꧋ꦲꦗꦤꦼꦒꦺꦴꦂꦫꦶꦮꦶꦠ꧀ꦰꦶꦁꦲꦶꦱꦶꦃꦲꦼꦤꦺꦴꦩ꧀"
+	var s = "𰀦Aÿぃ好乇αβζβЖѰѾѾक़ऄळ४ॐꌊ걹"
 	s = string([]rune(s)[:])
 	fmt.Print(s)
 	testDuncode(s)

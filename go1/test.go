@@ -48,7 +48,7 @@ func testDuncodeCompress(s string) (bytes []byte) {
 		var b = last.toBytes()
 		var decoded = &Duncode{}
 		decoded.readBytes(b)
-		var c = decoded.toChars()
+		var c = decoded.toChar()
 		fmt.Printf(" encode %d %c -->%c  bytes %d\n", i, x, c, b)
 		buffer.Write(b)
 		last = now
@@ -57,7 +57,7 @@ func testDuncodeCompress(s string) (bytes []byte) {
 	var b = last.toBytes()
 	var now = &Duncode{}
 	now.readBytes(b)
-	var c = now.toChars()
+	var c = now.toChar()
 	fmt.Printf(" encode -->%c \n", c)
 	buffer.Write(b)
 	return buffer.Bytes()

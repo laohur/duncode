@@ -1,6 +1,9 @@
 package main
 
-import bytes2 "bytes"
+import (
+	bytes2 "bytes"
+	"log"
+)
 
 type Duncode struct {
 	CodePoint int
@@ -52,7 +55,12 @@ func Rune2Duncode(char rune) (d *Duncode) {
 		duncode.Index = idx
 		return duncode
 	}
-	panic("无效字符" + string(char))
+
+	log.Fatalf("无效字符" + string(char))
+	duncode.Index = point
+	duncode.ZoneId = 4 
+	duncode.BlockId = -1
+	return duncode
 }
 
 func (a *Duncode) compress(b *Duncode) (r bool) {
@@ -282,53 +290,53 @@ func (d *Duncode) readBytes(bytes []byte) {
 	panic("readBytes not valid Duncode Zone id")
 }
 
-func (d *Duncode) toChars() (chars []rune) {
-	switch d.ZoneId {
-	case 0:
-		d.CodePoint = d.Index
-		chars = []rune{rune(d.CodePoint)}
-		return chars
-	case 1:
-		d.CodePoint = int(ShuangJies[d.Index])
-		chars = []rune{ShuangJies[d.Index]}
-		return chars
-	case 2:
-		if len(d.Symbols) == 0 {
-			d.CodePoint = blocks[d.BlockId].Began + d.Index
-			chars = []rune{rune(d.CodePoint)}
-			return chars
-		} else {
-			var x = rune(blocks[d.BlockId].Began + d.Symbols[0])
-			var y = rune(blocks[d.BlockId].Began + d.Symbols[1])
-			chars = []rune{x, y}
-			if len(d.Symbols) == 3 {
-				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
-				chars = append(chars, z)
-			}
-			return chars
-		}
-	case 3:
-		if len(d.Symbols) == 0 {
-			d.CodePoint = blocks[d.BlockId].Began + d.Index
-			chars = []rune{rune(d.CodePoint)}
-			return chars
-		} else {
-			var x = blocks[d.BlockId].Began + d.Symbols[0]
-			var y = blocks[d.BlockId].Began + d.Symbols[1]
-			chars = []rune{rune(x), rune(y)}
-			if len(d.Symbols) == 3 {
-				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
-				chars = append(chars, rune(z))
-			}
-			return chars
-		}
-	case 4:
-		d.CodePoint = d.Index
-		chars = []rune{rune(d.CodePoint)}
-		return chars
-	}
-	panic("toChars not valid Duncode Zone id")
-}
+// func (d *Duncode) toChars() (chars []rune) {
+// 	switch d.ZoneId {
+// 	case 0:
+// 		d.CodePoint = d.Index
+// 		chars = []rune{rune(d.CodePoint)}
+// 		return chars
+// 	case 1:
+// 		d.CodePoint = int(ShuangJies[d.Index])
+// 		chars = []rune{ShuangJies[d.Index]}
+// 		return chars
+// 	case 2:
+// 		if len(d.Symbols) == 0 {
+// 			d.CodePoint = blocks[d.BlockId].Began + d.Index
+// 			chars = []rune{rune(d.CodePoint)}
+// 			return chars
+// 		} else {
+// 			var x = rune(blocks[d.BlockId].Began + d.Symbols[0])
+// 			var y = rune(blocks[d.BlockId].Began + d.Symbols[1])
+// 			chars = []rune{x, y}
+// 			if len(d.Symbols) == 3 {
+// 				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
+// 				chars = append(chars, z)
+// 			}
+// 			return chars
+// 		}
+// 	case 3:
+// 		if len(d.Symbols) == 0 {
+// 			d.CodePoint = blocks[d.BlockId].Began + d.Index
+// 			chars = []rune{rune(d.CodePoint)}
+// 			return chars
+// 		} else {
+// 			var x = blocks[d.BlockId].Began + d.Symbols[0]
+// 			var y = blocks[d.BlockId].Began + d.Symbols[1]
+// 			chars = []rune{rune(x), rune(y)}
+// 			if len(d.Symbols) == 3 {
+// 				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
+// 				chars = append(chars, rune(z))
+// 			}
+// 			return chars
+// 		}
+// 	case 4:
+// 		d.CodePoint = d.Index
+// 		chars = []rune{rune(d.CodePoint)}
+// 		return chars
+// 	}
+// 	panic("toChars not valid Duncode Zone id")
+// }
 
 func (d *Duncode) toChar() (char rune) {
 	switch d.ZoneId {

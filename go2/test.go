@@ -13,18 +13,18 @@ func check(e error) {
 }
 func testDuncode(s string) {
 	for i, x := range []rune(s) {
-		if i == 10 {
+		if i == 0 {
 			fmt.Println(i)
 		}
 		var a = Rune2Duncode(x)
 		var b = a.toBytes()
 		var now = &Duncode{}
 		now.readBytes(b)
-		var c = now.toChars()
-		if x != c[0] {
+		var c = now.toChar()
+		if x != c {
 			log.Fatalf("i:%d %c != %c", i, x, c)
 		}
-		fmt.Printf("testDuncode %d %c --> %d %c \n", i, x, len(b), c[0])
+		fmt.Printf("testDuncode %d %c --> %d %c \n", i, x, len(b), c)
 	}
 
 }
@@ -48,7 +48,7 @@ func testDuncodeCompress(s string) (bytes []byte) {
 		var b = last.toBytes()
 		var decoded = &Duncode{}
 		decoded.readBytes(b)
-		var c = decoded.toChars()
+		var c = decoded.toChar()
 		fmt.Printf(" encode %d %c -->%c  bytes %d\n", i, x, c, b)
 		buffer.Write(b)
 		last = now
@@ -57,7 +57,7 @@ func testDuncodeCompress(s string) (bytes []byte) {
 	var b = last.toBytes()
 	var now = &Duncode{}
 	now.readBytes(b)
-	var c = now.toChars()
+	var c = now.toChar()
 	fmt.Printf(" encode -->%c \n", c)
 	buffer.Write(b)
 	return buffer.Bytes()
@@ -111,10 +111,15 @@ func bytes2string(bytes []byte) (s string) {
 		}
 		// fmt.Printf(" decode %d %d\n", i, x)
 		var now = Duncode{}
-		now.readBytes(buffer.Bytes())
-		var chars = now.toChars()
+		var bs = buffer.Bytes()
+		now.readBytes(bs)
+
+		var decompressed = now.decompress()
+		for _, d := range decompressed {
+			var char = d.toChar()
+			line += string(char)
+		}
 		buffer.Reset()
-		line += string(chars)
 		// charArray = append(charArray, chars)
 		// for _,c:=range chars{
 		// charArray=append(charArray, c)
@@ -131,7 +136,7 @@ func testLine(s string) {
 	var l2 = []rune(t)
 	for i, x := range l1 {
 		if x != l2[i] {
-			panic(i)
+			log.Panicf("%d %c %c", i, x, l2[i])
 		}
 	}
 	if len(l1) < len(l2) {
@@ -141,8 +146,10 @@ func testLine(s string) {
 	fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 }
 
-func test() {
+func main2() {
 	var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
+	s = string([]rune(s)[:])
+
 	fmt.Println(s)
 	// testDuncode(s)
 	// testDuncodeCompress(s)

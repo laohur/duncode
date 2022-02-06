@@ -48,12 +48,12 @@ var ZoneName2Id = map[string]int{
 var BlockName2Id = make(map[string]int)
 var Children = make(map[string]*[]string)
 
-func Split(s string,sep rune)([]string){
+func Split(s string, sep rune) []string {
 	splitFn := func(c rune) bool {
 		return c == sep
-    }
-    // fmt.Printf("Fields are: %q\n", s.FieldsFunc("a,,b,c", splitFn))
-	var t= strings.FieldsFunc(s, splitFn)
+	}
+	// fmt.Printf("Fields are: %q\n", s.FieldsFunc("a,,b,c", splitFn))
+	var t = strings.FieldsFunc(s, splitFn)
 	return t
 }
 
@@ -74,8 +74,8 @@ func loadBlocks(path string) {
 			row[i] = strings.TrimSpace(row[i])
 		}
 		var ZoneId = ZoneName2Id[row[5]]
-		
-		var child=Split(row[8], ';')
+
+		var child = Split(row[8], ';')
 		var block = Block{
 			BlockId:  BlockId,
 			Began:    Int(row[0], 16),
@@ -95,22 +95,22 @@ func loadBlocks(path string) {
 		BlockName2Id[block.Chinese] = BlockId
 		block.Size = block.End - block.Began + 1
 		if ZoneId == 2 {
-			block.MotherId=BlockName2Id[block.Mother]
-			if block.Mother==block.Chinese  {
+			block.MotherId = BlockName2Id[block.Mother]
+			if block.Mother == block.Chinese {
 				Zone2Id += 1
 				block.Zone2Id = Zone2Id
-			} 
+			}
 		} else if ZoneId == 3 {
-			block.MotherId=BlockName2Id[block.Mother]
-			if block.Mother==block.Chinese  {
+			block.MotherId = BlockName2Id[block.Mother]
+			if block.Mother == block.Chinese {
 				Zone3Id += 1
 				block.Zone3Id = Zone3Id
 			}
 		}
-		if len(block.Child)>0{
-			Children[block.Chinese]=&block.Child
+		if len(block.Child) > 0 {
+			Children[block.Chinese] = &block.Child
 		}
-		blocks = append(blocks,& block)
+		blocks = append(blocks, &block)
 	}
 	fmt.Printf("loadBlocks %d done \n", len(blocks))
 }
