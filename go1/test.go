@@ -13,7 +13,7 @@ func check(e error) {
 }
 func testDuncode(s string) {
 	for i, x := range []rune(s) {
-		if i == 10 {
+		if i == 5 {
 			fmt.Println(i)
 		}
 		var a = Rune2Duncode(x)

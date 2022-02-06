@@ -47,34 +47,39 @@ func EncodeFile(src, tgt string, debug bool) {
 		n_src += len(line)
 		n_tgt += len(bytes)
 		if n_line%1000000 == 0 {
-			log.Printf("line %d src %d tgt %d", n_line, n_src, n_tgt)
+			log.Printf("line %d src %d tgt %d", n_line, len(line), len(bytes))
 		}
 	}
 	w.Flush()
 	log.Printf("line %d src %d tgt %d done \n", n_line, n_src, n_tgt)
+	fi, err := os.Stat(src)
+	var size0 = fi.Size()
+	fi, err = os.Stat(tgt)
+	var size1 = fi.Size()
+	log.Printf(" src %d tgt %d done \n", size0, size1)
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func main() {
-	var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
-	s = "꧋ꦲꦗꦤꦼꦒꦺꦴꦂꦫꦶꦮꦶꦠ꧀ꦰꦶꦁꦲꦶꦱꦶꦃꦲꦼꦤꦺꦴꦩ꧀"
+func main1() {
+	var s = "Aÿぃ好乇αβζβЖѰѾѾक़ऄळ४ॐꌊ걹"
+	// s = "꧋ꦲꦗꦤꦼꦒꦺꦴꦂꦫꦶꦮꦶꦠ꧀ꦰꦶꦁꦲꦶꦱꦶꦃꦲꦼꦤꦺꦴꦩ꧀"
 	s = string([]rune(s)[:])
-	// fmt.Print(s)
-	// testDuncode(s)
+	fmt.Print(s)
+	testDuncode(s)
 	// testDuncodeCompress(s)
 	testLine(s)
 
-	// var src = "C:/data/sentences.csv"
-	// var tgt = src + ".duncode1"
-	// EncodeFile(src, tgt, true)
+	var src = "C:/data/sentences.csv"
+	var tgt = src + ".duncode1"
+	EncodeFile(src, tgt, true)
 	fmt.Print("done")
 
 }
 
-func main0() {
+func main() {
 	// var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
 	// testDuncode(s)
 	// testDuncodeCompress(s)

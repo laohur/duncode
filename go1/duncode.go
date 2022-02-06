@@ -22,31 +22,37 @@ func Rune2Duncode(char rune) (d *Duncode) {
 		return duncode
 	}
 	var idx, ok = ShuangJieIndex[char]
+	if ok && point > 0x07FF { // 双节
+		duncode.ZoneId = 1
+		duncode.BlockId = -1
+		duncode.Index = idx
+		return duncode
+	}
+
+	for _, block := range blocks {
+		if block.Began <= point && point <= block.End && block.ZoneId >= 2 {
+			duncode.BlockId = block.BlockId
+			duncode.ZoneId = block.ZoneId
+			if duncode.ZoneId == 4 { //孤字
+				duncode.Index = point
+			} else { //8位字、7位字
+				duncode.MotherId = block.MotherId
+				if block.Mother == block.Chinese {
+					duncode.Index = point - block.Began
+				} else {
+					duncode.Index = point - block.Began + block.Offset //始终母块为基
+				}
+			}
+			return duncode
+		}
+	}
 	if ok { // 双节
 		duncode.ZoneId = 1
 		duncode.BlockId = -1
 		duncode.Index = idx
 		return duncode
-	} else {
-		for _, block := range blocks {
-			if block.Began <= point && point <= block.End {
-				duncode.BlockId = block.BlockId
-				duncode.ZoneId = block.ZoneId
-				if duncode.ZoneId == 4 { //孤字
-					duncode.Index = point
-				} else { //8位字、7位字
-					duncode.MotherId = block.MotherId
-					if block.Mother==block.Chinese {
-						duncode.Index = point - block.Began
-					} else {
-						duncode.Index = point - block.Began + block.Offset //始终母块为基
-					}
-				}
-				return duncode
-			}
-		}
 	}
-	return duncode
+	panic("无效字符" + string(char))
 }
 
 func (a *Duncode) compress(b *Duncode) (r bool) {
@@ -119,12 +125,19 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		var z = byte(0)
 		switch len(d.Symbols) {
 		case 0:
-			// z = byte(d.Index)
-			// break
+			var index, ok = ShuangJieIndex[rune(d.CodePoint)]
+			if ok { // 双节
+				var idx uint16 = uint16(index)
+				var a byte = byte(0x80) + byte(idx>>7)
+				var b byte = byte(idx & 0x7f)
+				return []byte{a, b}
+			}
+			// 孤字
 			var a = byte(0x80) + byte(d.CodePoint>>14)&byte(0x7f)
 			var b = byte(0x80) + byte(d.CodePoint>>7)&byte(0x7f)
 			var c = byte(d.CodePoint) & byte(0x7f)
 			return []byte{a, b, c}
+
 		case 2:
 			y = byte(d.Symbols[0])
 			z = byte(d.Symbols[1])
@@ -135,7 +148,7 @@ func (d *Duncode) toBytes() (bytes []byte) {
 			z = byte(d.Symbols[2])
 			break
 		}
-// |       2 | 8位字 | 111nnxxx  | 1xxxxxyy  | 1yyyyyyz | 0zzzzzzz | x,y,z   | Greek…      |           1.33 |
+		// |       2 | 8位字 | 111nnxxx  | 1xxxxxyy  | 1yyyyyyz | 0zzzzzzz | x,y,z   | Greek…      |           1.33 |
 		var Zone2Id = blocks[d.MotherId].Zone2Id
 		var a byte = byte(0b111)<<5 | byte(Zone2Id)<<3 | x>>5
 		var b byte = byte(0b1)<<7 | x<<2 | y>>6
@@ -148,8 +161,14 @@ func (d *Duncode) toBytes() (bytes []byte) {
 		var z = byte(0)
 		switch len(d.Symbols) {
 		case 0:
-			// z = byte(d.Index)
-			// break
+			var index, ok = ShuangJieIndex[rune(d.CodePoint)]
+			if ok { // 双节
+				var idx uint16 = uint16(index)
+				var a byte = byte(0x80) + byte(idx>>7)
+				var b byte = byte(idx & 0x7f)
+				return []byte{a, b}
+			}
+			// 孤字
 			var a = byte(0x80) + byte(d.CodePoint>>14)&byte(0x7f)
 			var b = byte(0x80) + byte(d.CodePoint>>7)&byte(0x7f)
 			var c = byte(d.CodePoint) & byte(0x7f)
@@ -164,7 +183,7 @@ func (d *Duncode) toBytes() (bytes []byte) {
 			z = byte(d.Symbols[2])
 			break
 		}
-// |       3 | 7位字 | 1nnnnnnn  | 1xxxxxxx  | 1yyyyyyy | 0zzzzzzz | x,y,z   | Devanagari… |           1.33 |
+		// |       3 | 7位字 | 1nnnnnnn  | 1xxxxxxx  | 1yyyyyyy | 0zzzzzzz | x,y,z   | Devanagari… |           1.33 |
 		var Zone3Id = blocks[d.MotherId].Zone3Id
 		var a byte = byte(0b1)<<7 | byte(Zone3Id)
 		var b byte = byte(0b1)<<7 | x
@@ -214,11 +233,11 @@ func (d *Duncode) readBytes(bytes []byte) {
 	case 4:
 		var a = byte(0x7f) & bytes[0]
 		if a>>5 == 0b11 { //8位字
-// |       2 | 8位字 | 111nnxxx  | 1xxxxxyy  | 1yyyyyyz | 0zzzzzzz | x,y,z   | Greek…      |           1.33 |
-			var nn = int( (a>>3)&0b11 )
+			// |       2 | 8位字 | 111nnxxx  | 1xxxxxyy  | 1yyyyyyz | 0zzzzzzz | x,y,z   | Greek…      |           1.33 |
+			var nn = int((a >> 3) & 0b11)
 			d.ZoneId = 2
 			for _, block := range blocks {
-				if block.Zone2Id == nn && block.Mother==block.Chinese {
+				if block.Zone2Id == nn && block.Mother == block.Chinese {
 					d.MotherId = block.MotherId
 					d.BlockId = block.BlockId
 					break
@@ -237,11 +256,11 @@ func (d *Duncode) readBytes(bytes []byte) {
 			}
 			return
 		} else { //7位字
-// |       3 | 7位字 | 1nnnnnnn  | 1xxxxxxx  | 1yyyyyyy | 0zzzzzzz | x,y,z   | Devanagari… |           1.33 |
+			// |       3 | 7位字 | 1nnnnnnn  | 1xxxxxxx  | 1yyyyyyy | 0zzzzzzz | x,y,z   | Devanagari… |           1.33 |
 			d.ZoneId = 3
 			var nn = int(a & 0x7f)
 			for _, block := range blocks {
-				if block.Zone3Id == nn && block.Mother==block.Chinese {
+				if block.Zone3Id == nn && block.Mother == block.Chinese {
 					d.BlockId = block.BlockId
 					d.MotherId = block.MotherId
 					break

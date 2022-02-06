@@ -159,11 +159,11 @@ func init() {
 	fmt.Println("\nHello, store")
 	// fmt.Println(GetCurrPath())
 	var block_path = "Blocks.txt"
-	// block_path = getPath(block_path)
+	block_path = getPath(block_path)
 	loadBlocks(block_path)
 	// fmt.Println(len(blocks))
 	var shuangjie_path = "ShuangJie.txt"
-	// shuangjie_path = getPath(shuangjie_path)
+	shuangjie_path = getPath(shuangjie_path)
 	loadShuangJie(shuangjie_path)
 	// fmt.Println(len(ShuangJieIndex))
 	fmt.Println("store loaded\n")

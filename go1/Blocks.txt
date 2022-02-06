@@ -7,18 +7,18 @@
 0300	036F	112	Combining Diacritical Marks	组合变音标记	双节	组合变音标记	0	
 0370	03FF	144	Greek and Coptic	希腊语和科普特语	八位字	希腊语和科普特语	0	古希腊数字
 0400	04FF	256	Cyrillic	西里尔文	八位字	西里尔文	0	
-0500	052F	48	Cyrillic Supplement	西里尔文增补	双节	西里尔文增补	0	
+0500	052F	48	Cyrillic Supplement	西里尔文增补	七位字	西里尔文增补	0	西里尔文扩展-C;西里尔文扩展-A
 0530	058F	96	Armenian	亚美尼亚语	七位字	亚美尼亚语	0	曼达文
 0590	05FF	112	Hebrew	希伯来语	七位字	希伯来语	0	常用印度数字形式
 0600	06FF	256	Arabic	阿拉伯语	八位字	阿拉伯语	0	
 0700	074F	80	Syriac	叙利亚文	七位字	叙利亚文	0	叙利亚文增补
-0750	077F	48	Arabic Supplement	阿拉伯语增补	双节	阿拉伯语增补	0	
-0780	07BF	64	Thaana	它拿字母	七位字	它拿字母	0	西非书面文字
-07C0	07FF	64	NKo	西非书面文字	七位字	它拿字母	64	
-0800	083F	64	Samaritan	撒玛利亚字母	七位字	撒玛利亚字母	0	布希德文
+0750	077F	48	Arabic Supplement	阿拉伯语增补	七位字	阿拉伯语增补	0	它拿字母
+0780	07BF	64	Thaana	它拿字母	七位字	阿拉伯语增补	48	
+07C0	07FF	64	NKo	西非书面文字	七位字	西非书面文字	0	撒玛利亚字母
+0800	083F	64	Samaritan	撒玛利亚字母	七位字	西非书面文字	64	
 0840	085F	32	Mandaic	曼达文	七位字	亚美尼亚语	96	
 0860	086F	16	Syriac Supplement	叙利亚文增补	七位字	叙利亚文	80	
-08A0	08FF	96	Arabic Extended-A	阿拉伯语扩展-A	双节	阿拉伯语扩展-A	0	
+08A0	08FF	96	Arabic Extended-A	阿拉伯语扩展-A	七位字	阿拉伯语扩展-A	0	布希德文
 0900	097F	128	Devanagari	梵文	七位字	梵文	0	
 0980	09FF	128	Bengali	孟加拉语	七位字	孟加拉语	0	
 0A00	0A7F	128	Gurmukhi	古木基文	七位字	古木基文	0	
@@ -43,7 +43,7 @@
 16A0	16FF	96	Runic	卢恩字母	七位字	卢恩字母	0	他加禄语
 1700	171F	32	Tagalog	他加禄语	七位字	卢恩字母	96	
 1720	173F	32	Hanunoo	哈努诺文	七位字	格鲁吉亚语	96	
-1740	175F	32	Buhid	布希德文	七位字	撒玛利亚字母	64	
+1740	175F	32	Buhid	布希德文	七位字	阿拉伯语扩展-A	96	
 1760	177F	32	Tagbanwa	塔格巴努亚文	七位字	塔格巴努亚文	0	林布语
 1780	17FF	128	Khmer	高棉语	七位字	高棉语	0	
 1800	18AF	176	Mongolian	蒙古语	双节	蒙古语	0	
@@ -60,7 +60,7 @@
 1BC0	1BFF	64	Batak	巴塔克语	七位字	德宏傣文	48	
 1C00	1C4F	80	Lepcha	绒巴文	七位字	绒巴文	0	桑塔利语字母
 1C50	1C7F	48	Ol Chiki	桑塔利语字母	七位字	绒巴文	80	
-1C80	1C8F	16	Cyrillic Extended-C	西里尔文扩展-C	双节	西里尔文扩展-C	0	
+1C80	1C8F	16	Cyrillic Extended-C	西里尔文扩展-C	七位字	西里尔文增补	48	
 1C90	1CBF	48	Georgian Extended	格鲁吉亚文扩展	七位字	格鲁吉亚文扩展	0	格鲁吉亚文增补
 1CC0	1CCF	16	Sundanese Supplement	巽他文增补	七位字	巽他语	64	
 1CD0	1CFF	48	Vedic Extensions	吠陀扩展	七位字	吠陀扩展	0	提非纳字母
@@ -68,14 +68,14 @@
 1D80	1DBF	64	Phonetic Extensions Supplement	音标扩展增补	双节	音标扩展增补	0	
 1DC0	1DFF	64	Combining Diacritical Marks Supplement	结合变音标记增补	双节	结合变音标记增补	0	
 1E00	1EFF	256	Latin Extended Additional	拉丁语扩展附加	双节	拉丁语扩展附加	0	
-1F00	1FFF	256	Greek Extended	希腊语扩展	双节	希腊语扩展	0	
+1F00	1FFF	256	Greek Extended	希腊语扩展	孤字	希腊语扩展	0	
 2000	206F	112	General Punctuation	一般标点符号	双节	一般标点符号	0	
 2070	209F	48	Superscripts and Subscripts	上标和下标	双节	上标和下标	0	
 20A0	20CF	48	Currency Symbols	货币符号	双节	货币符号	0	
 20D0	20FF	48	Combining Diacritical Marks for Symbols	结合符号的变音符号	双节	结合符号的变音符号	0	
-2100	214F	80	Letterlike Symbols	类字母符号	双节	类字母符号	0	
+2100	214F	80	Letterlike Symbols	类字母符号	孤字	类字母符号	0	
 2150	218F	64	Number Forms	数字形式符号	双节	数字形式符号	0	
-2190	21FF	112	Arrows	箭头符号	双节	箭头符号	0	
+2190	21FF	112	Arrows	箭头符号	孤字	箭头符号	0	
 2200	22FF	256	Mathematical Operators	数学运算符	双节	数学运算符	0	
 2300	23FF	256	Miscellaneous Technical	杂项技术符号	孤字	杂项技术符号	0	
 2400	243F	64	Control Pictures	控制图片	孤字	控制图片	0	
@@ -86,21 +86,21 @@
 25A0	25FF	96	Geometric Shapes	几何形状	孤字	几何形状	0	
 2600	26FF	256	Miscellaneous Symbols	杂项符号	孤字	杂项符号	0	
 2700	27BF	192	Dingbats	装饰符号	孤字	装饰符号	0	
-27C0	27EF	48	Miscellaneous Mathematical Symbols-A	杂项数学符号-A	双节	杂项数学符号-A	0	
+27C0	27EF	48	Miscellaneous Mathematical Symbols-A	杂项数学符号-A	孤字	杂项数学符号-A	0	
 27F0	27FF	16	Supplemental Arrows-A	补充箭头-A	孤字	补充箭头-A	0	
 2800	28FF	256	Braille Patterns	盲文	双节	盲文	0	
 2900	297F	128	Supplemental Arrows-B	补充箭头-B	孤字	补充箭头-B	0	
-2980	29FF	128	Miscellaneous Mathematical Symbols-B	杂项数学符号-B	双节	杂项数学符号-B	0	
-2A00	2AFF	256	Supplemental Mathematical Operators	补充数学运算符	双节	补充数学运算符	0	
+2980	29FF	128	Miscellaneous Mathematical Symbols-B	杂项数学符号-B	孤字	杂项数学符号-B	0	
+2A00	2AFF	256	Supplemental Mathematical Operators	补充数学运算符	孤字	补充数学运算符	0	
 2B00	2BFF	256	Miscellaneous Symbols and Arrows	其他符号和箭头	孤字	其他符号和箭头	0	
-2C00	2C5F	96	Glagolitic	格拉哥里字母	七位字	格拉哥里字母	0	巴尔米拉字母
-2C60	2C7F	32	Latin Extended-C	拉丁语扩展-C	双节	拉丁语扩展-C	0	
+2C00	2C5F	96	Glagolitic	格拉哥里字母	七位字	格拉哥里字母	0	拉丁语扩展-C
+2C60	2C7F	32	Latin Extended-C	拉丁语扩展-C	七位字	格拉哥里字母	96	
 2C80	2CFF	128	Coptic	科普特文	七位字	科普特文	0	
 2D00	2D2F	48	Georgian Supplement	格鲁吉亚文增补	七位字	格鲁吉亚文扩展	48	
 2D30	2D7F	80	Tifinagh	提非纳字母	七位字	吠陀扩展	48	
 2D80	2DDF	96	Ethiopic Extended	阿姆哈拉语扩展	孤字	阿姆哈拉语扩展	0	
-2DE0	2DFF	32	Cyrillic Extended-A	西里尔文扩展-A	双节	西里尔文扩展-A	0	
-2E00	2E7F	128	Supplemental Punctuation	补充标点符号	双节	补充标点符号	0	
+2DE0	2DFF	32	Cyrillic Extended-A	西里尔文扩展-A	七位字	西里尔文增补	64	
+2E00	2E7F	128	Supplemental Punctuation	补充标点符号	孤字	补充标点符号	0	
 2E80	2EFF	128	CJK Radicals Supplement	中日韩汉字部首补充	双节	中日韩汉字部首补充	0	
 2F00	2FDF	224	Kangxi Radicals	康熙部首	双节	康熙部首	0	
 2FF0	2FFF	16	Ideographic Description Characters	表意文字描述字符	双节	表意文字描述字符	0	
@@ -122,15 +122,15 @@ A000	A48F	1168	Yi Syllables	彝族音节	孤字	彝族音节	0
 A490	A4CF	64	Yi Radicals	彝族部首	孤字	彝族部首	0	
 A4D0	A4FF	48	Lisu	傈僳语	七位字	傈僳语	0	锡尔赫特文
 A500	A63F	320	Vai	瓦伊语	孤字	瓦伊语	0	
-A640	A69F	96	Cyrillic Extended-B	西里尔文扩展-B	双节	西里尔文扩展-B	0	
+A640	A69F	96	Cyrillic Extended-B	西里尔文扩展-B	孤字	西里尔文扩展-B	0	
 A6A0	A6FF	96	Bamum	巴姆穆语	七位字	巴姆穆语	0	帝国阿拉姆語
 A700	A71F	32	Modifier Tone Letters	声调修饰符	双节	声调修饰符	0	
-A720	A7FF	224	Latin Extended-D	拉丁语扩展-D	双节	拉丁语扩展-D	0	
+A720	A7FF	224	Latin Extended-D	拉丁语扩展-D	孤字	拉丁语扩展-D	0	
 A800	A82F	48	Syloti Nagri	锡尔赫特文	七位字	傈僳语	48	
 A830	A83F	16	Common Indic Number Forms	常用印度数字形式	七位字	希伯来语	112	
 A840	A87F	64	Phags-pa	八思巴字	七位字	八思巴字	0	克耶字母
 A880	A8DF	96	Saurashtra	索拉什特拉语	七位字	索拉什特拉语	0	乌加里特语
-A8E0	A8FF	32	Devanagari Extended	天城文扩展	双节	天城文扩展	0	
+A8E0	A8FF	32	Devanagari Extended	天城文扩展	孤字	天城文扩展	0	
 A900	A92F	48	Kayah Li	克耶字母	七位字	八思巴字	64	
 A930	A95F	48	Rejang	拉让语	七位字	拉让语	0	切罗基语增补
 A960	A97F	32	Hangul Jamo Extended-A	韩文字母扩展	孤字	韩文字母扩展	0	
@@ -141,7 +141,7 @@ AA60	AA7F	32	Myanmar Extended-A	缅甸语扩展-A	八位字	缅甸语	192
 AA80	AADF	96	Tai Viet	傣文	七位字	傣文	0	吕基亚语
 AAE0	AAFF	32	Meetei Mayek Extensions	曼尼普尔语扩展	七位字	曼尼普尔语	0	
 AB00	AB2F	48	Ethiopic Extended-A	阿姆哈拉语扩展-A	孤字	阿姆哈拉语扩展-A	0	
-AB30	AB6F	64	Latin Extended-E	拉丁文扩展-E	双节	拉丁文扩展-E	0	
+AB30	AB6F	64	Latin Extended-E	拉丁文扩展-E	孤字	拉丁文扩展-E	0	
 AB70	ABBF	80	Cherokee Supplement	切罗基语增补	七位字	拉让语	48	
 ABC0	ABFF	64	Meetei Mayek	曼尼普尔语	七位字	曼尼普尔语	0	曼尼普尔语扩展
 AC00	D7AF	11184	Hangul Syllables	韩文音节	孤字	韩文音节	0	
@@ -151,13 +151,13 @@ DB80	DBFF	128	High Private Use Surrogates	高位专用替代	孤字	高位专用
 DC00	DFFF	1024	Low Surrogates	低位专用	孤字	低位专用	0	
 E000	F8FF	6400	Private Use Area	私用区	孤字	私用区	0	
 F900	FAFF	512	CJK Compatibility Ideographs	中日韩兼容表意文字	孤字	中日韩兼容表意文字	0	
-FB00	FB4F	80	Alphabetic Presentation Forms	字母连写形式	双节	字母连写形式	0	
+FB00	FB4F	80	Alphabetic Presentation Forms	字母连写形式	孤字	字母连写形式	0	
 FB50	FDFF	688	Arabic Presentation Forms-A	阿拉伯语表现形式-A	孤字	阿拉伯语表现形式-A	0	
 FE00	FE0F	16	Variation Selectors	变体选择器	双节	变体选择器	0	
 FE10	FE1F	16	Vertical Forms	竖排形式	双节	竖排形式	0	
 FE20	FE2F	16	Combining Half Marks	组合用半符号	双节	组合用半符号	0	
 FE30	FE4F	32	CJK Compatibility Forms	中日韩兼容形式	双节	中日韩兼容形式	0	
-FE50	FE6F	32	Small Form Variants	小型变体形式	双节	小型变体形式	0	
+FE50	FE6F	32	Small Form Variants	小型变体形式	孤字	小型变体形式	0	
 FE70	FEFF	144	Arabic Presentation Forms-B	阿拉伯语表现形式-B	孤字	阿拉伯语表现形式-B	0	
 FF00	FFEF	240	Halfwidth and Fullwidth Forms	全角和半角字符	双节	全角和半角字符	0	
 FFF0	FFFF	16	Specials	特殊字符	孤字	特殊字符	0	
@@ -184,53 +184,53 @@ FFF0	FFFF	16	Specials	特殊字符	孤字	特殊字符	0
 10600	1077F	384	Linear A	线性文字A	孤字	线性文字A	0	
 10800	1083F	64	Cypriot Syllabary	塞浦路斯语音节	七位字	高加索阿尔巴尼亚语言	64	
 10840	1085F	32	Imperial Aramaic	帝国阿拉姆語	七位字	巴姆穆语	96	
-10860	1087F	32	Palmyrene	巴尔米拉字母	七位字	格拉哥里字母	96	
-10880	108AF	48	Nabataean	纳巴泰字母	七位字	纳巴泰字母	0	哈特兰字母
-108E0	108FF	32	Hatran	哈特兰字母	七位字	纳巴泰字母	48	
-10900	1091F	32	Phoenician	腓尼基字母	七位字	腓尼基字母	0	吕底亚语
-10920	1093F	32	Lydian	吕底亚语	七位字	腓尼基字母	32	
+10860	1087F	32	Palmyrene	巴尔米拉字母	七位字	巴尔米拉字母	0	纳巴泰字母
+10880	108AF	48	Nabataean	纳巴泰字母	七位字	巴尔米拉字母	32	
+108E0	108FF	32	Hatran	哈特兰字母	七位字	哈特兰字母	0	腓尼基字母
+10900	1091F	32	Phoenician	腓尼基字母	七位字	哈特兰字母	32	
+10920	1093F	32	Lydian	吕底亚语	七位字	吕底亚语	0	佉卢文
 10980	1099F	32	Meroitic Hieroglyphs	麦罗埃象形文字	七位字	麦罗埃象形文字	0	麦罗埃文草体字
 109A0	109FF	96	Meroitic Cursive	麦罗埃文草体字	七位字	麦罗埃象形文字	32	
-10A00	10A5F	96	Kharoshthi	佉卢文	七位字	佉卢文	0	碑刻帕提亚文
+10A00	10A5F	96	Kharoshthi	佉卢文	七位字	吕底亚语	32	
 10A60	10A7F	32	Old South Arabian	古南部阿拉伯语	七位字	古南部阿拉伯语	0	古北部阿拉伯语
 10A80	10A9F	32	Old North Arabian	古北部阿拉伯语	七位字	古南部阿拉伯语	32	
 10AC0	10AFF	64	Manichaean	摩尼字母	七位字	摩尼字母	0	阿维斯陀字母
 10B00	10B3F	64	Avestan	阿维斯陀字母	七位字	摩尼字母	64	
-10B40	10B5F	32	Inscriptional Parthian	碑刻帕提亚文	七位字	佉卢文	96	
-10B60	10B7F	32	Inscriptional Pahlavi	碑刻巴列维文	七位字	碑刻巴列维文	0	诗篇巴列维文
-10B80	10BAF	48	Psalter Pahlavi	诗篇巴列维文	七位字	碑刻巴列维文	32	
-10C00	10C4F	80	Old Turkic	古代突厥語	七位字	古代突厥語	0	以利买字母
+10B40	10B5F	32	Inscriptional Parthian	碑刻帕提亚文	七位字	碑刻帕提亚文	0	诗篇巴列维文
+10B60	10B7F	32	Inscriptional Pahlavi	碑刻巴列维文	七位字	碑刻巴列维文	0	碑刻巴列维文
+10B80	10BAF	48	Psalter Pahlavi	诗篇巴列维文	七位字	碑刻帕提亚文	32	
+10C00	10C4F	80	Old Turkic	古代突厥語	七位字	古代突厥語	0	古粟特字母
 10C80	10CFF	128	Old Hungarian	古匈牙利字母	七位字	古匈牙利字母	0	
-10D00	10D3F	64	Hanifi Rohingya	哈乃斐罗兴亚文字	七位字	哈乃斐罗兴亚文字	0	阿洪姆语
+10D00	10D3F	64	Hanifi Rohingya	哈乃斐罗兴亚文字	七位字	哈乃斐罗兴亚文字	0	粟特字母
 10E60	10E7F	32	Rumi Numeral Symbols	鲁米数字符号	孤字	鲁米数字符号	0	
-10F00	10F2F	48	Old Sogdian	古粟特字母	七位字	古粟特字母	0	粟特字母
-10F30	10F6F	64	Sogdian	粟特字母	七位字	古粟特字母	48	
-10FE0	10FFF	32	Elymaic	以利买字母	七位字	古代突厥語	80	
+10F00	10F2F	48	Old Sogdian	古粟特字母	七位字	古代突厥語	80	
+10F30	10F6F	64	Sogdian	粟特字母	七位字	哈乃斐罗兴亚文字	64	
+10FE0	10FFF	32	Elymaic	以利买字母	七位字	以利买字母	0	凯提文
 11000	1107F	128	Brahmi	婆罗米文	七位字	婆罗米文	0	
-11080	110CF	80	Kaithi	凯提文	七位字	凯提文	0	索拉僧平文字
-110D0	110FF	48	Sora Sompeng	索拉僧平文字	七位字	凯提文	80	
-11100	1114F	80	Chakma	查克马语	七位字	查克马语	0	马哈雅尼文
-11150	1117F	48	Mahajani	马哈雅尼文	七位字	查克马语	80	
+11080	110CF	80	Kaithi	凯提文	七位字	以利买字母	32	
+110D0	110FF	48	Sora Sompeng	索拉僧平文字	七位字	索拉僧平文字	0	查克马语
+11100	1114F	80	Chakma	查克马语	七位字	索拉僧平文字	48	
+11150	1117F	48	Mahajani	马哈雅尼文	七位字	马哈雅尼文	0	和卓文
 11180	111DF	96	Sharada	夏拉达文	七位字	夏拉达文	0	古僧伽罗文数字
 111E0	111FF	32	Sinhala Archaic Numbers	古僧伽罗文数字	七位字	夏拉达文	96	
-11200	1124F	80	Khojki	和卓文	七位字	和卓文	0	木尔坦文
-11280	112AF	48	Multani	木尔坦文	七位字	和卓文	80	
-112B0	112FF	80	Khudawadi	库达瓦迪文	七位字	库达瓦迪文	0	
+11200	1124F	80	Khojki	和卓文	七位字	马哈雅尼文	48	
+11280	112AF	48	Multani	木尔坦文	七位字	木尔坦文	0	库达瓦迪文
+112B0	112FF	80	Khudawadi	库达瓦迪文	七位字	木尔坦文	48	
 11300	1137F	128	Grantha	古兰塔文	七位字	古兰塔文	0	
 11400	1147F	128	Newa	尼瓦尔语	七位字	尼瓦尔语	0	
 11480	114DF	96	Tirhuta	提尔胡塔文	七位字	提尔胡塔文	0	
 11580	115FF	128	Siddham	悉昙文字	七位字	悉昙文字	0	
 11600	1165F	96	Modi	莫迪文	七位字	莫迪文	0	
-11660	1167F	32	Mongolian Supplement	蒙古语增补	双节	蒙古语增补	0	
+11660	1167F	32	Mongolian Supplement	蒙古语增补	孤字	蒙古语增补	0	
 11680	116CF	80	Takri	塔克里文	七位字	塔克里文	0	
-11700	1173F	64	Ahom	阿洪姆语	七位字	哈乃斐罗兴亚文字	64	
+11700	1173F	64	Ahom	阿洪姆语	七位字	阿洪姆语	0	包钦豪文
 11800	1184F	80	Dogra	多格拉语	七位字	多格拉语	0	
 118A0	118FF	96	Warang Citi	瓦兰齐地文	七位字	瓦兰齐地文	0	
 119A0	119FF	96	Nandinagari	南迪城文	七位字	南迪城文	0	
 11A00	11A4F	80	Zanabazar Square	札那巴札尔方形字母	七位字	札那巴札尔方形字母	0	格拉哥里字母增补
 11A50	11AAF	96	Soyombo	索永布字母	七位字	索永布字母	0	
-11AC0	11AFF	64	Pau Cin Hau	包钦豪文	七位字	包钦豪文	0	文乔字母
-11C00	11C6F	112	Bhaiksuki	拜克舒基文	七位字	拜克舒基文	0	埃及圣书体格式控制
+11AC0	11AFF	64	Pau Cin Hau	包钦豪文	七位字	阿洪姆语	64	
+11C00	11C6F	112	Bhaiksuki	拜克舒基文	七位字	拜克舒基文	0	
 11C70	11CBF	80	Marchen	玛钦文	七位字	玛钦文	0	巴萨哇文字
 11D00	11D5F	96	Masaram Gondi	马萨拉姆贡德文字	七位字	马萨拉姆贡德文字	0	望加锡文
 11D60	11DAF	80	Gunjala Gondi	贡贾拉贡德文	七位字	贡贾拉贡德文	0	默禄文
@@ -240,7 +240,7 @@ FFF0	FFFF	16	Specials	特殊字符	孤字	特殊字符	0
 12400	1247F	128	Cuneiform Numbers and Punctuation	楔形文字数字和标点符号	孤字	楔形文字数字和标点符号	0	
 12480	1254F	208	Early Dynastic Cuneiform	古代楔形文字	孤字	古代楔形文字	0	
 13000	1342F	1072	Egyptian Hieroglyphs	埃及圣书体	孤字	埃及圣书体	0	
-13430	1343F	16	Egyptian Hieroglyph Format Controls	埃及圣书体格式控制	七位字	拜克舒基文	112	
+13430	1343F	16	Egyptian Hieroglyph Format Controls	埃及圣书体格式控制	孤字	埃及圣书体格式控制	0	
 14400	1467F	640	Anatolian Hieroglyphs	安纳托利亚象形文字	孤字	安纳托利亚象形文字	0	
 16800	16A3F	576	Bamum Supplement	巴姆穆文字增补	孤字	巴姆穆文字增补	0	
 16A40	16A6F	48	Mro	默禄文	七位字	贡贾拉贡德文	80	
@@ -248,12 +248,12 @@ FFF0	FFFF	16	Specials	特殊字符	孤字	特殊字符	0
 16B00	16B8F	144	Pahawh Hmong	帕哈苗文	孤字	帕哈苗文	0	
 16E40	16E9F	96	Medefaidrin	梅德法伊德林文	七位字	梅德法伊德林文	0	玛雅数字
 16F00	16F9F	160	Miao	柏格理苗文	孤字	柏格理苗文	0	
-16FE0	16FFF	32	Ideographic Symbols and Punctuation	表意符号和标点符号	双节	表意符号和标点符号	0	
+16FE0	16FFF	32	Ideographic Symbols and Punctuation	表意符号和标点符号	孤字	表意符号和标点符号	0	
 17000	187FF	6144	Tangut	西夏文	孤字	西夏文	0	
 18800	18AFF	768	Tangut Components	西夏文部首	孤字	西夏文部首	0	
-1B000	1B0FF	256	Kana Supplement	日文假名补充	双节	日文假名补充	0	
-1B100	1B12F	48	Kana Extended-A	日文假名扩展-A	双节	日文假名扩展-A	0	
-1B130	1B16F	64	Small Kana Extension	小型日文假名扩展	双节	小型日文假名扩展	0	
+1B000	1B0FF	256	Kana Supplement	日文假名补充	孤字	日文假名补充	0	
+1B100	1B12F	48	Kana Extended-A	日文假名扩展-A	孤字	日文假名扩展-A	0	
+1B130	1B16F	64	Small Kana Extension	小型日文假名扩展	孤字	小型日文假名扩展	0	
 1B170	1B2FF	400	Nushu	女书	孤字	女书	0	
 1BC00	1BC9F	160	Duployan	杜普雷速记	孤字	杜普雷速记	0	
 1BCA0	1BCAF	16	Shorthand Format Controls	速记格式控制符	孤字	速记格式控制符	0	
@@ -267,7 +267,7 @@ FFF0	FFFF	16	Specials	特殊字符	孤字	特殊字符	0
 1D800	1DAAF	688	Sutton SignWriting	萨顿书写符号	孤字	萨顿书写符号	0	
 1E000	1E02F	48	Glagolitic Supplement	格拉哥里字母增补	七位字	札那巴札尔方形字母	80	
 1E100	1E14F	80	Nyiakeng Puachue Hmong	尼亚坑普阿绰苗文	七位字	尼亚坑普阿绰苗文	0	
-1E2C0	1E2FF	64	Wancho	文乔字母	七位字	包钦豪文	64	
+1E2C0	1E2FF	64	Wancho	文乔字母	七位字	文乔字母	0	
 1E800	1E8DF	224	Mende Kikakui	门德基卡库文	孤字	门德基卡库文	0	
 1E900	1E95F	96	Adlam	阿德拉姆字母	七位字	阿德拉姆字母	0	
 1EC70	1ECBF	80	Indic Siyaq Numbers	印度西亚格数字	七位字	印度西亚格数字	0	
@@ -280,7 +280,7 @@ FFF0	FFFF	16	Specials	特殊字符	孤字	特殊字符	0
 1F200	1F2FF	256	Enclosed Ideographic Supplement	带圈表意文字补充	孤字	带圈表意文字补充	0	
 1F300	1F5FF	768	Miscellaneous Symbols and Pictographs	杂项符号和象形文字	孤字	杂项符号和象形文字	0	
 1F600	1F64F	80	Emoticons	表情符号	孤字	表情符号	0	
-1F650	1F67F	48	Ornamental Dingbats	装饰符号	双节	装饰符号	0	
+1F650	1F67F	48	Ornamental Dingbats	装饰符号	孤字	装饰符号	0	
 1F680	1F6FF	128	Transport and Map Symbols	交通和地图符号	孤字	交通和地图符号	0	
 1F700	1F77F	128	Alchemical Symbols	炼金术符号	孤字	炼金术符号	0	
 1F780	1F7FF	128	Geometric Shapes Extended	几何图形扩展	孤字	几何图形扩展	0	
@@ -295,6 +295,6 @@ FFF0	FFFF	16	Specials	特殊字符	孤字	特殊字符	0
 2CEB0	2EBEF	7488	CJK Unified Ideographs Extension F	中日韩统一表意文字扩展F区	孤字	中日韩统一表意文字扩展F区	0	
 2F800	2FA1F	544	CJK Compatibility Ideographs Supplement	中日韩兼容表意文字增补	孤字	中日韩兼容表意文字增补	0	
 E0000	E007F	128	Tags	标签	孤字	标签	0	
-E0100	E01EF	240	Variation Selectors Supplement	变化选择器补充	双节	变化选择器补充	0	
+E0100	E01EF	240	Variation Selectors Supplement	变化选择器补充	孤字	变化选择器补充	0	
 F0000	FFFFF	65536	Supplementary Private Use Area-A	补充私人使用区-A	孤字	补充私人使用区-A	0	
 100000	10FFFF	65536	Supplementary Private Use Area-B	补充私人使用区-B	孤字	补充私人使用区-B	0	
