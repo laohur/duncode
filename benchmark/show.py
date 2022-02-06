@@ -2,6 +2,8 @@
 
 import glob
 import os
+import sys
+from logzero import logger
 
 
 def show_size():
@@ -19,6 +21,13 @@ def show_size():
         size0 = os.path.getsize(src)
         size1 = os.path.getsize(tgt1)
         size2 = os.path.getsize(tgt2)
+
+        if n_chars > max(size1, size2):
+            logger.error(
+                f"{src} n_chars{n_chars} {size0} --> {size1} {size2} ")
+            sys.exit()
+        logger.info(f"{src} n_chars{n_chars} {size0} --> {size1} {size2} ")
+
         row = (name, n_chars, size0, size1, size2)
         doc.append(row)
     with open("wiki-show.txt", "w") as f:

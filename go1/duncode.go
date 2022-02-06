@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
 	bytes2 "bytes"
 	"log"
+	"os"
+	"strings"
 )
 
 type Duncode struct {
@@ -58,7 +61,7 @@ func Rune2Duncode(char rune) (d *Duncode) {
 
 	log.Fatalf("无效字符" + string(char))
 	duncode.Index = point
-	duncode.ZoneId = 4 
+	duncode.ZoneId = 4
 	duncode.BlockId = -1
 	return duncode
 }
@@ -407,4 +410,134 @@ func Decode(bytes []byte) (s string) {
 		buffer.Reset()
 	}
 	return line
+}
+
+func EncodeFile(src, tgt string, debug bool) {
+	log.Printf("EncodeFile src:%s --> tgt:%s started \n", src, tgt)
+	file, err := os.Open(src)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	f, err := os.Create(tgt)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	w := bufio.NewWriter(f)
+
+	var n_line = 0
+	var n_src = 0
+	var n_tgt = 0
+	var n_char = 0
+	scanner := bufio.NewScanner(file)
+	// optionally, resize scanner's capacity for lines over 64K, see next example
+	// scanner.Split(bufio.ScanWords) // use scanwords
+	const maxCapacity = 1024 * 1024 * 1024 // your required line length
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+	// scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		var line = scanner.Text() + "\n"
+		n_char += len([]rune(line))
+		var bytes = Encode(line)
+		_, err := w.Write(bytes)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if debug {
+			w.Flush()
+			var decoded = Decode(bytes)
+			if line != decoded {
+				var d = strings.Compare(line, decoded)
+				log.Fatalf("n_line:%d %s != %s %d", n_line, line, decoded, d)
+				os.Exit(n_line)
+			}
+		}
+		n_line += 1
+		n_src += len(line)
+		n_tgt += len(bytes)
+		if n_line%1000000 == 0 {
+			log.Printf("line %d n_char%d src %d tgt %d", n_line, n_char, len(line), len(bytes))
+		}
+	}
+	w.Flush()
+	log.Printf("line %d n_char %d src %d tgt %d done \n", n_line, n_char, n_src, n_tgt)
+	fi, err := os.Stat(src)
+	var size0 = fi.Size()
+	fi, err = os.Stat(tgt)
+	var size1 = fi.Size()
+	log.Printf(" src %d tgt %d done \n", size0, size1)
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func DecodeFile(src, tgt string, debug bool) {
+	log.Printf("EncodeFile src:%s --> tgt:%s started \n", src, tgt)
+	file, err := os.Open(src)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	f, err := os.Create(tgt)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	w := bufio.NewWriter(f)
+
+	var n_line = 0
+	var n_src = 0
+	var n_tgt = 0
+	var n_char = 0
+	scanner := bufio.NewScanner(file)
+	// optionally, resize scanner's capacity for lines over 64K, see next example
+	// scanner.Split(bufio.ScanWords) // use scanwords
+	const maxCapacity = 1024 * 1024 * 1024 // your required line length
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+	// scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		// var line = scanner.Text()
+		var bytes = scanner.Bytes()
+		bytes=append(bytes,'\n')
+		// n_char += len([]rune(line))
+		// var bytes = Encode(line)
+		var line = Decode(bytes)
+		if debug {
+			w.Flush()
+			// var decoded = Encode(bytes)
+			// if line != decoded {
+			// 	var d = strings.Compare(line, decoded)
+			// 	log.Fatalf("n_line:%d %s != %s %d", n_line, line, decoded, d)
+			// 	os.Exit(n_line)
+			// }
+		}
+		var encoded = []byte(line)
+		_, err := w.Write(encoded)
+		if err != nil {
+			log.Fatal(err)
+		}
+		n_line += 1
+		n_src += len(line)
+		n_tgt += len(bytes)
+		if n_line%1000000 == 0 {
+			log.Printf("line %d n_char%d src %d tgt %d", n_line, n_char, len(line), len(bytes))
+		}
+	}
+	w.Flush()
+	log.Printf("line %d n_char %d src %d tgt %d done \n", n_line, n_char, n_src, n_tgt)
+	fi, err := os.Stat(src)
+	var size0 = fi.Size()
+	fi, err = os.Stat(tgt)
+	var size1 = fi.Size()
+	log.Printf(" src %d tgt %d done \n", size0, size1)
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 }
