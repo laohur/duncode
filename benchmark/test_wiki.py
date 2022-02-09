@@ -23,8 +23,13 @@ duncoder2 = "C:/doc/duncode/code/duncode/go2/go2.exe"
 def encoderFile(src, tgt, duncoder):
     # if os.path.exists(tgt):
     # logger.info(f"{tgt} exists ")
-    cmd = f"{duncoder} {src} {tgt} debug"
-    os.system(cmd)
+    cmd = f"{duncoder} encode {src} {tgt} debug"
+    with os.popen(cmd) as p:
+        for l in p:
+            if 'err' in l:
+                logger.error(f"{cmd} ")
+                sys.exit()
+    # os.system(cmd)
     size = os.path.getsize(tgt)
     return size
 
@@ -42,8 +47,8 @@ def encode_wikis():
 
         name = os.path.basename(src)
         lang = name[:2]
-        if lang != 'bi':
-            continue
+        # if lang != 'bi':
+        # continue
         tgt = f"{tgt1_dir}/{lang}.txt"
         encoderFile(src, tgt, duncoder1)
         size1 = os.path.getsize(tgt)
@@ -63,3 +68,8 @@ def encode_wikis():
 
 if __name__ == '__main__':
     encode_wikis()
+"""
+
+
+
+"""

@@ -59,7 +59,7 @@ func Rune2Duncode(char rune) (d *Duncode) {
 		return duncode
 	}
 
-	log.Fatalf("无效字符" + string(char))
+	// log.Fatalf("error 无效字符" + string(char))
 	duncode.Index = point
 	duncode.ZoneId = 4
 	duncode.BlockId = -1
@@ -293,54 +293,6 @@ func (d *Duncode) readBytes(bytes []byte) {
 	panic("readBytes not valid Duncode Zone id")
 }
 
-// func (d *Duncode) toChars() (chars []rune) {
-// 	switch d.ZoneId {
-// 	case 0:
-// 		d.CodePoint = d.Index
-// 		chars = []rune{rune(d.CodePoint)}
-// 		return chars
-// 	case 1:
-// 		d.CodePoint = int(ShuangJies[d.Index])
-// 		chars = []rune{ShuangJies[d.Index]}
-// 		return chars
-// 	case 2:
-// 		if len(d.Symbols) == 0 {
-// 			d.CodePoint = blocks[d.BlockId].Began + d.Index
-// 			chars = []rune{rune(d.CodePoint)}
-// 			return chars
-// 		} else {
-// 			var x = rune(blocks[d.BlockId].Began + d.Symbols[0])
-// 			var y = rune(blocks[d.BlockId].Began + d.Symbols[1])
-// 			chars = []rune{x, y}
-// 			if len(d.Symbols) == 3 {
-// 				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
-// 				chars = append(chars, z)
-// 			}
-// 			return chars
-// 		}
-// 	case 3:
-// 		if len(d.Symbols) == 0 {
-// 			d.CodePoint = blocks[d.BlockId].Began + d.Index
-// 			chars = []rune{rune(d.CodePoint)}
-// 			return chars
-// 		} else {
-// 			var x = blocks[d.BlockId].Began + d.Symbols[0]
-// 			var y = blocks[d.BlockId].Began + d.Symbols[1]
-// 			chars = []rune{rune(x), rune(y)}
-// 			if len(d.Symbols) == 3 {
-// 				var z = rune(blocks[d.BlockId].Began + d.Symbols[2])
-// 				chars = append(chars, rune(z))
-// 			}
-// 			return chars
-// 		}
-// 	case 4:
-// 		d.CodePoint = d.Index
-// 		chars = []rune{rune(d.CodePoint)}
-// 		return chars
-// 	}
-// 	panic("toChars not valid Duncode Zone id")
-// }
-
 func (d *Duncode) toChar() (char rune) {
 	switch d.ZoneId {
 	case 0:
@@ -504,7 +456,7 @@ func DecodeFile(src, tgt string, debug bool) {
 	for scanner.Scan() {
 		// var line = scanner.Text()
 		var bytes = scanner.Bytes()
-		bytes=append(bytes,'\n')
+		bytes = append(bytes, '\n')
 		// n_char += len([]rune(line))
 		// var bytes = Encode(line)
 		var line = Decode(bytes)
@@ -531,11 +483,13 @@ func DecodeFile(src, tgt string, debug bool) {
 	}
 	w.Flush()
 	log.Printf("line %d n_char %d src %d tgt %d done \n", n_line, n_char, n_src, n_tgt)
-	fi, err := os.Stat(src)
-	var size0 = fi.Size()
-	fi, err = os.Stat(tgt)
-	var size1 = fi.Size()
-	log.Printf(" src %d tgt %d done \n", size0, size1)
+	if debug {
+		fi, _ := os.Stat(src)
+		var size0 = fi.Size()
+		fi, err = os.Stat(tgt)
+		var size1 = fi.Size()
+		log.Printf(" src %d tgt %d done \n", size0, size1)
+	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)

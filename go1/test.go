@@ -143,7 +143,7 @@ func testLine(s string) {
 		panic(len(l1))
 	}
 
-	fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
+	fmt.Printf("duncode :%s n_char%d %d  --> %s %d\n", s, len(l1),len(s), t, len(bytes))
 }
 
 func main2() {

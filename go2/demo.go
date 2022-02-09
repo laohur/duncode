@@ -27,24 +27,18 @@ func main1() {
 
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
-	// var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
-	// testDuncode(s)
-	// testDuncodeCompress(s)
-	// testLine(s)
-	// var bytes = Encode(s)
-	// var t = Decode(bytes)
-	// fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 	args := os.Args
-	var src = args[1]
-	var tgt = args[2]
+	var method = args[1]
+	var src = args[2]
+	var tgt = args[3]
 	var debug = false
-	if len(args) > 3 {
+	if len(args) > 4 {
 		debug = true
 	}
-	// var src = "C:/data/sentences.csv"
-	// var tgt = src + ".duncode1"
-	// log.Printf("done")
-	EncodeFile(src, tgt, debug)
-	// log.Printf("done")
-
+	if method == "encode" {
+		EncodeFile(src, tgt, debug)
+	} else if method == "decode" {
+		DecodeFile(src, tgt, debug)
+	}
 }
+

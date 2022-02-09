@@ -9,42 +9,35 @@ import (
 func main1() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 	var s = "𰀦Aÿぃ好乇αβζβЖѰѾѾक़ऄळ४ॐꌊ걹"
-	s="Mark Abhisit Vejjajiva (toktok Tae: อภิสิทธิ์ เวชชาชีวะ ; bon long 3 Ogis 1964 long Newcastle upon Tyne long Yunaeted Kingdom‎), em i wan man blong politik blong Taelan. Em i bin praem minista blong Taelan, stat long 2008, kasem 2011.\n"
-	s = string([]rune(s)[:])
+	s = "\u3000♪リンゴ可愛いや可愛いやリンゴ。半世紀も前に流行した「リンゴの歌」がぴったりするかもしれない。米アップルコンピュータ社のパソコン「マック（マッキントッシュ）」を、こよなく愛する人たちのことだ。「アップル信者」なんて言い方まである。"
+	s = string([]rune(s)[:2])
 	fmt.Print(s)
 	testDuncode(s)
 	// testDuncodeCompress(s)
 	testLine(s)
 
 	var src = "C:/data/sentences.csv"
-	src = "C:/data/wiki-1m/bi.txt"
+	src = "C:/data/wiki-1m/kv.txt"
 	var tgt = src + ".duncode1"
 	var decoded = src + ".decoded"
 	EncodeFile(src, tgt, true)
-	DecodeFile(tgt,decoded, true)
-	fmt.Print("done")
+	DecodeFile(tgt, decoded, true)
+	fmt.Print(" demo done")
 }
 
 func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
-	// var s = "Aÿぃ好乇αβζЖѰѾѾक़ऄळ४ॐꌊ걹"
-	// testDuncode(s)
-	// testDuncodeCompress(s)
-	// testLine(s)
-	// var bytes = Encode(s)
-	// var t = Decode(bytes)
-	// fmt.Printf("duncode :%s %d  --> %s %d\n", s, len(s), t, len(bytes))
 	args := os.Args
-	var src = args[1]
-	var tgt = args[2]
+	var method = args[1]
+	var src = args[2]
+	var tgt = args[3]
 	var debug = false
-	if len(args) > 3 {
+	if len(args) > 4 {
 		debug = true
 	}
-	// var src = "C:/data/sentences.csv"
-	// var tgt = src + ".duncode1"
-	// log.Printf("done")
-	EncodeFile(src, tgt, debug)
-	// log.Printf("done")
-
+	if method == "encode" {
+		EncodeFile(src, tgt, debug)
+	} else if method == "decode" {
+		DecodeFile(src, tgt, debug)
+	}
 }
