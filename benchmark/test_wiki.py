@@ -40,20 +40,23 @@ def encode_wikis():
     tgt2_dir = "C:/data/duncoder2"
     files = glob.glob(
         rf"C:/data/wiki-1m/*.txt")
-    for src in files:
+    files = list(files)
+    srcs = ["C:/data/sentences.csv"]
+    srcs += files
+    for src in srcs:
         size0 = os.path.getsize(src)
         n_chars = len(open(src).read())
         # n_chars = sum(len(x) for x in open(src).read())
 
         name = os.path.basename(src)
-        lang = name[:2]
+        # lang = name[:2]
         # if lang != 'bi':
         # continue
-        tgt = f"{tgt1_dir}/{lang}.txt"
+        tgt = f"{tgt1_dir}/{name}"
         encoderFile(src, tgt, duncoder1)
         size1 = os.path.getsize(tgt)
 
-        tgt = f"{tgt2_dir}/{lang}.txt"
+        tgt = f"{tgt2_dir}/{name}"
         encoderFile(src, tgt, duncoder2)
         size2 = os.path.getsize(tgt)
 
@@ -69,7 +72,6 @@ def encode_wikis():
 if __name__ == '__main__':
     encode_wikis()
 """
-
-
+n_char 479362758  src 543514581 tgt 513994997  tgt 517119260 done
 
 """

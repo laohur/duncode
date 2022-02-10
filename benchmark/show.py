@@ -7,12 +7,15 @@ from logzero import logger
 
 
 def show_size():
-    doc = []
+    doc = [["wiki_file_1m", "n_chars", "bytes_utf8",
+            "bytes_duncode1", "bytes_duncode2"]]
     tgt1_dir = "C:/data/duncoder1"
     tgt2_dir = "C:/data/duncoder2"
     files = glob.glob(
         rf"C:/data/wiki-1m/*.txt")
-    for src in files:
+    files = list(files)
+    srcs = files
+    for src in srcs:
         name = os.path.basename(src)
         lang = name[:2]
         tgt1 = f"{tgt1_dir}/{lang}.txt"
