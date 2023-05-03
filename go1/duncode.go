@@ -8,13 +8,14 @@ import (
 	"strings"
 )
 
+// Duncode Unit
 type Duncode struct {
-	CodePoint int
-	ZoneId    int
-	BlockId   int
-	MotherId  int
-	Index     int
-	Symbols   []int
+	CodePoint int  // Unicode CodePoint
+	ZoneId    int  // Duncode Zone ID
+	BlockId   int  // Duncode Block ID
+	MotherId  int  // Mother Duncode Block ID
+	Index     int  // Duncode Unit Index = Unicode CodePoint - Duncode Block Began
+	Symbols   []int  // store 1~3 Duncode Indexes on compress Duncode Units of same BlockId
 }
 
 func Rune2Duncode(char rune) (d *Duncode) {

@@ -1,5 +1,5 @@
 # duncode    
-an efficient universal character encoder, implement of paper "Duncode Characters Shorter".   
+an efficient universal character encoder, implement of paper ["Duncode Characters Shorter"](./Duncode Characters Shorter.pdf).   
 
 ## corpus
 https://github.com/laohur/wiki2txt
@@ -11,7 +11,8 @@ cpp
 java
 
 ## v2
-go
+* go1: default Duncoder
+* go2: is another style of Duncode with different zone distribution, worse than go1
 
 
 ## performance of encoders 

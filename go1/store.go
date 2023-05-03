@@ -19,21 +19,23 @@ func Int(num string, base int) (n int) {
 	return int(a)
 }
 
+// Duncode Block, simillar to Unicode Block
 type Block struct {
-	BlockId  int
-	Began    int
-	End      int
-	Size     int
-	English  string
-	Chinese  string
-	ZoneName string
-	Mother   string
-	MotherId int
-	Offset   int
-	Child    []string
-	ZoneId   int
-	Zone2Id  int
-	Zone3Id  int
+	BlockId  int  // Duncode Block Index
+	Began    int  // Unicode Point of first symbol in this Duncode Block
+	End      int  // Unicode Point of last symbol in this Duncode Block
+	Size     int  // Symbol Capacity of this Duncode Block
+	English  string // English Block Name
+	Chinese  string  // CHinese Block Name
+	// Mother, some two small Unicode Blocks are combined to One Duncode Block. First One is Mother Block, others are Children Blocks.
+	Mother   string  // For a Son Duncode Block, Mother Duncode Block Name
+	MotherId int  //  For a Son Duncode Block, Mother Duncode Block ID
+	Offset   int  // For a Son Duncode Block, Block Offset = Mother Block Began + Block Size 
+	Child    []string   // Children Duncode Blocks' Name
+	ZoneName string  // Zone name
+	ZoneId   int  // Zone ID
+	Zone2Id  int  // Zone 'bit7' ID
+	Zone3Id  int  // 'bit8' ID
 }
 
 var blocks = make([]*Block, 0)
