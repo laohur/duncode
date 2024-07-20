@@ -47,5 +47,20 @@ java
 |    Tibetan    |    bo.txt    | 1,053,038  |          3,108,029  |             2,080,294  |            2.95             |              1.98               |          149.40%         |
 |     Yoruba    |    yo.txt    | 1,050,996  |          1,230,927  |             1,193,098  |            1.17             |              1.14               |          103.17%         |
 
+
+## Citation
+```bib
+@article{Xue2023DuncodeCS,
+  title={Duncode Characters Shorter},
+  author={Changshan Xue},
+  journal={ArXiv},
+  year={2023},
+  volume={abs/2307.05414},
+  url={https://api.semanticscholar.org/CorpusID:259766322}
+}
+
+```
+
+
 ## License
 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)
